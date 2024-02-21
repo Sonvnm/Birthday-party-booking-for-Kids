@@ -60,8 +60,10 @@ CREATE TABLE Payment (
     MoneyReceiver nvarchar(100),
     PaymentTypeID nvarchar(100),
     Amount int,
-    FOREIGN KEY (PaymentTypeID) REFERENCES PaymentType(PaymentTypeID)
+    FOREIGN KEY (PaymentTypeID) REFERENCES PaymentType(PaymentTypeID),
+	BookingID nvarchar(100) REFERENCES Booking(BookingID),
 );
+drop table payment
 CREATE TABLE Booking (
 /*booking hợp với bookingdetail*/
     BookingID nvarchar(100) PRIMARY KEY,
@@ -71,7 +73,6 @@ CREATE TABLE Booking (
     FOREIGN KEY (UserID) REFERENCES [User](UserID),
     DateBooking date,
     LocationID nvarchar(100) REFERENCES Room(LocationID),
-	PaymentID nvarchar(100) REFERENCES Payment(PaymentID),
 	ServiceID nvarchar(100) REFERENCES Service(ServiceID),
 );
 drop TABLE Booking
