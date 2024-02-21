@@ -1,6 +1,6 @@
-CREATE database BirthdayPartyBookingForKids_DB
+﻿CREATE database BirthdayPartyBookingForKids_DB
 Use database BirthdayPartyBookingForKids_DB
-
+drop database BirthdayPartyBookingForKids_DB
 drop table Role
 
 CREATE TABLE Role (
@@ -21,42 +21,34 @@ CREATE TABLE Decoration (
     ItemID nvarchar(100) PRIMARY KEY,
     ItemName nvarchar(100),
     Description nvarchar(100),
-    ServiceID nvarchar(100),
     Price float,
     
 );
-CREATE TABLE Location (
+CREATE TABLE Room (
+/*location -> room*/
     LocationID nvarchar(100) PRIMARY KEY,
     LocationName nvarchar(100),
     Description nvarchar(100),
     Price float,
-    ServiceID nvarchar(100),
 );
 
 CREATE TABLE Menu (
     FoodID nvarchar(100) PRIMARY KEY,
     FoodName nvarchar(100),
     Description nvarchar(100),
-    ServiceID nvarchar(100),
     Price float,
 );
+/*them tolaprice*/
 CREATE TABLE Service (
     ServiceID nvarchar(100) PRIMARY KEY,
     ServiceName nvarchar(100),
     Description nvarchar(100),
-    LocationID nvarchar(100) REFERENCES Location(LocationID),
 	FoodID nvarchar(100) REFERENCES Menu(FoodID),
-	ItemID nvarchar(100) REFERENCES Decoration(ItemID)
-	
+	ItemID nvarchar(100) REFERENCES Decoration(ItemID),
+	TotalPrice float,
 );
+drop TABLE Service
 
-CREATE TABLE Booking (
-    BookingID nvarchar(100) PRIMARY KEY,
-    UserID nvarchar(100),
-    ParticipateAmount int,
-    TotalPrice float,
-    FOREIGN KEY (UserID) REFERENCES [User](UserID)
-);
 CREATE TABLE PaymentType (
     PaymentTypeID nvarchar(100) PRIMARY KEY,
     PaymentTypeName nvarchar(50),
@@ -70,19 +62,33 @@ CREATE TABLE Payment (
     Amount int,
     FOREIGN KEY (PaymentTypeID) REFERENCES PaymentType(PaymentTypeID)
 );
-CREATE TABLE BookingDetail (
+CREATE TABLE Booking (
+/*booking hợp với bookingdetail*/
+    BookingID nvarchar(100) PRIMARY KEY,
+    UserID nvarchar(100),
+    ParticipateAmount int,
+    TotalPrice float,
+    FOREIGN KEY (UserID) REFERENCES [User](UserID),
+    DateBooking date,
+    LocationID nvarchar(100) REFERENCES Room(LocationID),
+	PaymentID nvarchar(100) REFERENCES Payment(PaymentID),
+	ServiceID nvarchar(100) REFERENCES Service(ServiceID),
+);
+drop TABLE Booking
+
+/*CREATE TABLE BookingDetail (
     BookingDetailID nvarchar(100) PRIMARY KEY,
     Date date,
     BookingID nvarchar(100) REFERENCES Booking(BookingID),
     ServiceID nvarchar(100) REFERENCES Service(ServiceID),
 	PaymentID nvarchar(100) REFERENCES Payment(PaymentID)
 	
-);
+);*/
 
-CREATE TABLE Deposit (
+/*bỏ CREATE TABLE Deposit (
     BankName nvarchar(100),
     BankID nvarchar(100),
     MoneyReceiver nvarchar(100),
     PaymentType nvarchar(100),
     Amount int
-);
+);*/
