@@ -38,7 +38,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             var decoration = repo.GetDecorationsByName(name);
             if (decoration == null)
             {
-                return NotFound(name);
+                return NotFound();
             }
 
             return Ok(decoration);
