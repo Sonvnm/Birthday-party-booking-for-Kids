@@ -21,6 +21,6 @@ namespace Repositoties.Repository
 
         public IList<Decoration> GetDecorationsByName(string name) => DecorationDAO.SearchByName(name);
 
-        public void Update(Decoration decoration) => DecorationDAO.UpdateDecoration(decoration);s
+        public void Update(Decoration decoration) => DecorationDAO.UpdateDecoration(decoration);
     }
 }
