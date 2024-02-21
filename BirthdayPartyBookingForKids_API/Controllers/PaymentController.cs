@@ -33,6 +33,36 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             }
             return Ok();
         }
-         
+        /*[HttpDelete("id")]
+        public IActionResult DeletePayment(string paymentId)
+        {
+            var getPayment = repo.GetPaymentBypaymentId(paymentId);
+            if(getPayment == null)
+            {
+                return NoContent();
+            }
+            repo.Delete(getPayment);
+            return NoContent();
+        }*/
+        [HttpPost]
+        public ActionResult<Payment> PostPayment(Payment payment) 
+        {
+            try
+            {
+                repo.Save(payment);
+                return Ok();
+            }catch(Exception ex)
+            {
+                if(paymentExist == null)
+                {
+                    return NotFound();
+                }
+                return Ok(payment);
+            }
+        }
+        private bool paymentExist(string paymentId)
+        {
+            return repo.Exist(paymentId);
+        }
     }
-}
+}  
