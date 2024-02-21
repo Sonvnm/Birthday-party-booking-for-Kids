@@ -51,10 +51,6 @@ namespace BusinessObject.Models
                     .HasMaxLength(100)
                     .HasColumnName("LocationID");
 
-                entity.Property(e => e.PaymentId)
-                    .HasMaxLength(100)
-                    .HasColumnName("PaymentID");
-
                 entity.Property(e => e.ServiceId)
                     .HasMaxLength(100)
                     .HasColumnName("ServiceID");
@@ -66,22 +62,17 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.LocationId)
-                    .HasConstraintName("FK__Booking__Locatio__00200768");
-
-                entity.HasOne(d => d.Payment)
-                    .WithMany(p => p.Bookings)
-                    .HasForeignKey(d => d.PaymentId)
-                    .HasConstraintName("FK__Booking__Payment__01142BA1");
+                    .HasConstraintName("FK__Booking__Locatio__0E6E26BF");
 
                 entity.HasOne(d => d.Service)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.ServiceId)
-                    .HasConstraintName("FK__Booking__Service__02084FDA");
+                    .HasConstraintName("FK__Booking__Service__0F624AF8");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Booking__UserID__7F2BE32F");
+                    .HasConstraintName("FK__Booking__UserID__0D7A0286");
             });
 
             modelBuilder.Entity<Decoration>(entity =>
@@ -130,16 +121,25 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.BankName).HasMaxLength(100);
 
+                entity.Property(e => e.BookingId)
+                    .HasMaxLength(100)
+                    .HasColumnName("BookingID");
+
                 entity.Property(e => e.MoneyReceiver).HasMaxLength(100);
 
                 entity.Property(e => e.PaymentTypeId)
                     .HasMaxLength(100)
                     .HasColumnName("PaymentTypeID");
 
+                entity.HasOne(d => d.Booking)
+                    .WithMany(p => p.Payments)
+                    .HasForeignKey(d => d.BookingId)
+                    .HasConstraintName("FK__Payment__Booking__1332DBDC");
+
                 entity.HasOne(d => d.PaymentType)
                     .WithMany(p => p.Payments)
                     .HasForeignKey(d => d.PaymentTypeId)
-                    .HasConstraintName("FK__Payment__Payment__6D0D32F4");
+                    .HasConstraintName("FK__Payment__Payment__123EB7A3");
             });
 
             modelBuilder.Entity<PaymentType>(entity =>
