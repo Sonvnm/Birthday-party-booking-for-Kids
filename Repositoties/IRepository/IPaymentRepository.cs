@@ -13,5 +13,6 @@ namespace Repositoties.IRepository
         void Delete(Payment payment);
         void Update(Payment payment);
         IList<Payment> GetPaymentBypaymentId(string paymentId);
+        bool Exist(string paymentId);
     }
 }

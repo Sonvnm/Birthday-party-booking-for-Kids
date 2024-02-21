@@ -20,5 +20,7 @@ namespace Repositoties.Repository
         
 
         public void Update(Payment payment) => PaymentDAO.Update(payment);
+
+        public bool Exist(string paymentId) => PaymentDAO.Exist(paymentId);
     }
 }

@@ -8,64 +8,57 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class PaymentDAO
+    public class PaymentTypeDAO
     {
-        public static void Save(Payment payment)
+        public static List<PaymentType> GetPaymentType()
         {
+            var list = new List<PaymentType>();
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
-                var booking = context.Bookings.FirstOrDefault(o => o.BookingId == payment.BookingId);
-                booking.TotalPrice = payment.Amount;
-                context.Payments.Add(payment);
-                context.SaveChanges();
-            }catch(Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-        public static void Delete(Payment payment)
-        {
-            try
-            {
-                using var context = new BirthdayPartyBookingForKids_DBContext();
-                context.Remove(payment);
-                context.SaveChanges();
-            }catch(Exception ex) 
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-        public static IList<Payment> GetPaymentBypaymentId(string paymentId) 
-        {
-            var list = new List<Payment>();
-            try
-            {
-                using var context = new BirthdayPartyBookingForKids_DBContext();
-                list = context.Payments.Where(o => o.PaymentId == paymentId).ToList();
+                list = context.PaymentTypes.ToList();
             }catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
             return list;
         }
-        public static void Update(Payment payment)
+        public static void SavePaymentType(PaymentType paymentType)
         {
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
-                context.Entry(payment).State = EntityState.Modified;
+                context.PaymentTypes.Add(paymentType);
+                context.SaveChanges();
+            }catch(Exception ex) 
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public static void DeletePaymentType(PaymentType paymentType)
+        {
+            try
+            {
+                using var context = new BirthdayPartyBookingForKids_DBContext();
+                var checkPaymentType = context.PaymentTypes.SingleOrDefault(p => p.PaymentTypeId == paymentType.PaymentTypeId);
+                context.PaymentTypes.Remove(checkPaymentType);
                 context.SaveChanges();
             }catch(Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-        public static bool Exist(string paymentId)
+        public static void UpdatePaymentType(PaymentType paymentType)
         {
-            using var context = new BirthdayPartyBookingForKids_DBContext();
-            return context.Payments.Any(e => e.PaymentId == paymentId);
+            try
+            {
+                using var context = new BirthdayPartyBookingForKids_DBContext();
+                context.Entry(paymentType).State = EntityState.Modified;
+                context.SaveChanges();
+            }catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
-
     }
 }
