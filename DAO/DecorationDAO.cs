@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess
 {
-    public class DecorationDAO
+    public static class DecorationDAO
     {
         public static List<Decoration> GetDecorations()
         {
