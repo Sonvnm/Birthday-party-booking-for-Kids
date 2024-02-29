@@ -10,9 +10,9 @@ namespace BusinessObject.Models
             Services = new HashSet<Service>();
         }
 
-        public string FoodId { get; set; }
-        public string FoodName { get; set; }
-        public string Description { get; set; }
+        public string FoodId { get; set; } = null!;
+        public string? FoodName { get; set; }
+        public string? Description { get; set; }
         public double? Price { get; set; }
 
         public virtual ICollection<Service> Services { get; set; }

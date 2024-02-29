@@ -74,6 +74,8 @@ CREATE TABLE Booking (
     DateBooking date,
     LocationID nvarchar(100) REFERENCES Room(LocationID),
 	ServiceID nvarchar(100) REFERENCES Service(ServiceID),
+	KidBirthDay date,
+	KidName nvarchar(100)
 );
 drop TABLE Booking
 
