@@ -10,9 +10,9 @@ namespace BusinessObject.Models
             Bookings = new HashSet<Booking>();
         }
 
-        public string LocationId { get; set; }
-        public string LocationName { get; set; }
-        public string Description { get; set; }
+        public string LocationId { get; set; } = null!;
+        public string? LocationName { get; set; }
+        public string? Description { get; set; }
         public double? Price { get; set; }
 
         public virtual ICollection<Booking> Bookings { get; set; }

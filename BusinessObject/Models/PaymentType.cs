@@ -10,8 +10,8 @@ namespace BusinessObject.Models
             Payments = new HashSet<Payment>();
         }
 
-        public string PaymentTypeId { get; set; }
-        public string PaymentTypeName { get; set; }
+        public string PaymentTypeId { get; set; } = null!;
+        public string? PaymentTypeName { get; set; }
 
         public virtual ICollection<Payment> Payments { get; set; }
     }

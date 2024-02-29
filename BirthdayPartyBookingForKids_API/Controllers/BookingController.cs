@@ -10,7 +10,7 @@ using Repositoties.IRepository;
 
 namespace BirthdayPartyBookingForKids_API.Controllers
 {
-    
+    [Route("api/[controller]")]
     [ApiController]
     [ODataRouteComponent("Bookings")]
     public class BookingController : ODataController
@@ -22,6 +22,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             _bookingRepository = bookingRepository;
         }
 
+        [HttpGet("GetAllBooking")]
         [EnableQuery]
         [ODataRouteComponent]
         public IActionResult Get()
@@ -38,6 +39,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             }
         }
 
+        [HttpGet("{id}")]
         [EnableQuery]
         [ODataRouteComponent("({key})")]
         public IActionResult Get([FromODataUri] string key)
@@ -81,7 +83,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             }
         }
 
-        [HttpPatch]
+        [HttpPut]
         [ODataRouteComponent("({key})")]
         public IActionResult Update([FromODataUri] string key, [FromBody] Delta<Booking> bookingDelta)
         {

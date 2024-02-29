@@ -1,6 +1,7 @@
 using BusinessObject.Models;
 using DataAccess;
 using Microsoft.AspNetCore.OData;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.ModelBuilder;
 using Repositoties.IRepository;
 using Repositoties.Repository;
@@ -25,8 +26,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Register repositories and DAO
-builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-builder.Services.AddScoped<BookingDAO>();
+/*builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<BookingDAO>();*/
+
+
 
 
 var app = builder.Build();
