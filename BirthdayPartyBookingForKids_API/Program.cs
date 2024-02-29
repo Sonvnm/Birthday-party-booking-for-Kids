@@ -1,6 +1,7 @@
 using BusinessObject.Models;
 using DataAccess;
 using Microsoft.AspNetCore.OData;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OData.ModelBuilder;
 using Repositoties.IRepository;

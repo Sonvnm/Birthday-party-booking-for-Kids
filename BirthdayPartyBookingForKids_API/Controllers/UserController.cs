@@ -19,7 +19,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             try
             {
                 User user = repo.Login(username, password);
-                if (user == null) { return Ok(user); }
+                if (user != null) { return Ok(user); }
                 else { return NotFound(); }
             }
             catch (Exception ex) { return BadRequest(ex.Message); }

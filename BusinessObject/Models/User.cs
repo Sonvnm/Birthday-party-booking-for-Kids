@@ -11,11 +11,11 @@ namespace BusinessObject.Models
         }
 
         public string UserId { get; set; } = null!;
-        public string? UserName { get; set; }
-        public string? Email { get; set; }
-        public string? Password { get; set; }
-        public string? Phone { get; set; }
-        public string? RoleId { get; set; }
+        public string? UserName { get; set; } = null;
+        public string? Email { get; set; } = null;
+        public string? Password { get; set; } = null;
+        public string? Phone { get; set; } = null;
+        public string? RoleId { get; set; } = "1";
 
         public virtual Role? Role { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
