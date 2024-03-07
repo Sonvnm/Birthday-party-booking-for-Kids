@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.Configuration;
 
 namespace BusinessObject.Models
 {
@@ -17,26 +16,22 @@ namespace BusinessObject.Models
         {
         }
 
-        public virtual DbSet<Booking> Bookings { get; set; } = null!;
-        public virtual DbSet<Decoration> Decorations { get; set; } = null!;
-        public virtual DbSet<Menu> Menus { get; set; } = null!;
-        public virtual DbSet<Payment> Payments { get; set; } = null!;
-        public virtual DbSet<PaymentType> PaymentTypes { get; set; } = null!;
-        public virtual DbSet<Role> Roles { get; set; } = null!;
-        public virtual DbSet<Room> Rooms { get; set; } = null!;
-        public virtual DbSet<Service> Services { get; set; } = null!;
-        public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<Booking> Bookings { get; set; }
+        public virtual DbSet<Decoration> Decorations { get; set; }
+        public virtual DbSet<Menu> Menus { get; set; }
+        public virtual DbSet<Payment> Payments { get; set; }
+        public virtual DbSet<PaymentType> PaymentTypes { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Room> Rooms { get; set; }
+        public virtual DbSet<Service> Services { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                IConfigurationRoot configuration = new ConfigurationBuilder()
-                   .SetBasePath(Directory.GetCurrentDirectory())
-                   .AddJsonFile("appsettings.json")
-                   .Build();
-                var connectionString = configuration.GetConnectionString("DefaultConnection");
-                optionsBuilder.UseSqlServer(connectionString);
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=MSI\\SQLEXPRESS;uid=sa;pwd=12345;database=BirthdayPartyBookingForKids_DB;TrustServerCertificate=True");
             }
         }
 
@@ -64,6 +59,12 @@ namespace BusinessObject.Models
                     .HasMaxLength(100)
                     .HasColumnName("ServiceID");
 
+                entity.Property(e => e.Status).HasColumnName("status");
+
+                entity.Property(e => e.Time)
+                    .HasMaxLength(50)
+                    .HasColumnName("time");
+
                 entity.Property(e => e.UserId)
                     .HasMaxLength(100)
                     .HasColumnName("UserID");
@@ -87,7 +88,7 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Decoration>(entity =>
             {
                 entity.HasKey(e => e.ItemId)
-                    .HasName("PK__Decorati__727E83EB059E55A3");
+                    .HasName("PK__Decorati__727E83EB8BA8B0E2");
 
                 entity.ToTable("Decoration");
 
@@ -103,7 +104,7 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Menu>(entity =>
             {
                 entity.HasKey(e => e.FoodId)
-                    .HasName("PK__Menu__856DB3CBB536D2E0");
+                    .HasName("PK__Menu__856DB3CB310D57B4");
 
                 entity.ToTable("Menu");
 
@@ -176,7 +177,7 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Room>(entity =>
             {
                 entity.HasKey(e => e.LocationId)
-                    .HasName("PK__Room__E7FEA47725DBDD7F");
+                    .HasName("PK__Room__E7FEA477136FFEF7");
 
                 entity.ToTable("Room");
 
@@ -227,6 +228,8 @@ namespace BusinessObject.Models
                 entity.Property(e => e.UserId)
                     .HasMaxLength(100)
                     .HasColumnName("UserID");
+
+                entity.Property(e => e.BirthDate).HasColumnType("date");
 
                 entity.Property(e => e.Email).HasMaxLength(100);
 
