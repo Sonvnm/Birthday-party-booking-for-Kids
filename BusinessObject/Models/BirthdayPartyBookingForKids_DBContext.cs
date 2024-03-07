@@ -64,7 +64,7 @@ namespace BusinessObject.Models
                 entity.Property(e => e.Status).HasColumnName("status");
 
                 entity.Property(e => e.Time)
-                    .HasMaxLength(50)
+                    .HasMaxLength(100)
                     .HasColumnName("time");
 
                 entity.Property(e => e.UserId)
@@ -74,23 +74,23 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.LocationId)
-                    .HasConstraintName("FK__Booking__Locatio__7A672E12");
+                    .HasConstraintName("FK__Booking__Locatio__5AEE82B9");
 
                 entity.HasOne(d => d.Service)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.ServiceId)
-                    .HasConstraintName("FK__Booking__Service__7B5B524B");
+                    .HasConstraintName("FK__Booking__Service__5BE2A6F2");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Booking__UserID__797309D9");
+                    .HasConstraintName("FK__Booking__UserID__59FA5E80");
             });
 
             modelBuilder.Entity<Decoration>(entity =>
             {
                 entity.HasKey(e => e.ItemId)
-                    .HasName("PK__Decorati__727E83EB8BA8B0E2");
+                    .HasName("PK__Decorati__727E83EBA845847A");
 
                 entity.ToTable("Decoration");
 
@@ -106,7 +106,7 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Menu>(entity =>
             {
                 entity.HasKey(e => e.FoodId)
-                    .HasName("PK__Menu__856DB3CB310D57B4");
+                    .HasName("PK__Menu__856DB3CBE69F4DBB");
 
                 entity.ToTable("Menu");
 
@@ -146,12 +146,12 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Booking)
                     .WithMany(p => p.Payments)
                     .HasForeignKey(d => d.BookingId)
-                    .HasConstraintName("FK__Payment__Booking__7F2BE32F");
+                    .HasConstraintName("FK__Payment__Booking__5FB337D6");
 
                 entity.HasOne(d => d.PaymentType)
                     .WithMany(p => p.Payments)
                     .HasForeignKey(d => d.PaymentTypeId)
-                    .HasConstraintName("FK__Payment__Payment__7E37BEF6");
+                    .HasConstraintName("FK__Payment__Payment__5EBF139D");
             });
 
             modelBuilder.Entity<PaymentType>(entity =>
@@ -179,7 +179,7 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Room>(entity =>
             {
                 entity.HasKey(e => e.LocationId)
-                    .HasName("PK__Room__E7FEA477136FFEF7");
+                    .HasName("PK__Room__E7FEA4778234117D");
 
                 entity.ToTable("Room");
 

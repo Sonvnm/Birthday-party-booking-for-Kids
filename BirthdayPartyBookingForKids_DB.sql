@@ -12,6 +12,7 @@ CREATE TABLE [User] (
     UserName nvarchar(100),
     Email nvarchar(100),
     Password nvarchar(50),
+	BirthDate date,
     Phone nvarchar(11),
     RoleID nvarchar(20) REFERENCES [Role] (RoleID)
 	
@@ -53,17 +54,6 @@ CREATE TABLE PaymentType (
     PaymentTypeID nvarchar(100) PRIMARY KEY,
     PaymentTypeName nvarchar(50),
 );
-CREATE TABLE Payment (
-    PaymentID nvarchar(100) PRIMARY KEY,
-    BankName nvarchar(100),
-    BankID nvarchar(100),
-    MoneyReceiver nvarchar(100),
-    PaymentTypeID nvarchar(100),
-    Amount int,
-    FOREIGN KEY (PaymentTypeID) REFERENCES PaymentType(PaymentTypeID),
-	BookingID nvarchar(100) REFERENCES Booking(BookingID),
-);
-drop table payment
 CREATE TABLE Booking (
 /*booking hợp với bookingdetail*/
     BookingID nvarchar(100) PRIMARY KEY,
@@ -75,9 +65,24 @@ CREATE TABLE Booking (
     LocationID nvarchar(100) REFERENCES Room(LocationID),
 	ServiceID nvarchar(100) REFERENCES Service(ServiceID),
 	KidBirthDay date,
-	KidName nvarchar(100)
+	KidName nvarchar(100),
+	KidGender nvarchar (10),
+	time nvarchar(100),
+	status int
 );
 drop TABLE Booking
+CREATE TABLE Payment (
+    PaymentID nvarchar(100) PRIMARY KEY,
+    BankName nvarchar(100),
+    BankID nvarchar(100),
+    MoneyReceiver nvarchar(100),
+    PaymentTypeID nvarchar(100),
+    Amount int,
+    FOREIGN KEY (PaymentTypeID) REFERENCES PaymentType(PaymentTypeID),
+	BookingID nvarchar(100) REFERENCES Booking(BookingID),
+);
+drop table payment
+
 
 /*CREATE TABLE BookingDetail (
     BookingDetailID nvarchar(100) PRIMARY KEY,
