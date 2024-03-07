@@ -19,6 +19,7 @@ namespace BusinessObject.Models
         public string ServiceId { get; set; }
         public DateTime? KidBirthDay { get; set; }
         public string KidName { get; set; }
+        public string KidGender { get; set; }
         public string Time { get; set; }
         public int? Status { get; set; }
 

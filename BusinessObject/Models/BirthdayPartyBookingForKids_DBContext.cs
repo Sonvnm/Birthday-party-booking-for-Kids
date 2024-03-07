@@ -49,6 +49,8 @@ namespace BusinessObject.Models
 
                 entity.Property(e => e.KidBirthDay).HasColumnType("date");
 
+                entity.Property(e => e.KidGender).HasMaxLength(10);
+
                 entity.Property(e => e.KidName).HasMaxLength(100);
 
                 entity.Property(e => e.LocationId)
@@ -72,17 +74,17 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.LocationId)
-                    .HasConstraintName("FK__Booking__Locatio__5EBF139D");
+                    .HasConstraintName("FK__Booking__Locatio__7A672E12");
 
                 entity.HasOne(d => d.Service)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.ServiceId)
-                    .HasConstraintName("FK__Booking__Service__5FB337D6");
+                    .HasConstraintName("FK__Booking__Service__7B5B524B");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Booking__UserID__5DCAEF64");
+                    .HasConstraintName("FK__Booking__UserID__797309D9");
             });
 
             modelBuilder.Entity<Decoration>(entity =>
@@ -144,12 +146,12 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Booking)
                     .WithMany(p => p.Payments)
                     .HasForeignKey(d => d.BookingId)
-                    .HasConstraintName("FK__Payment__Booking__6383C8BA");
+                    .HasConstraintName("FK__Payment__Booking__7F2BE32F");
 
                 entity.HasOne(d => d.PaymentType)
                     .WithMany(p => p.Payments)
                     .HasForeignKey(d => d.PaymentTypeId)
-                    .HasConstraintName("FK__Payment__Payment__628FA481");
+                    .HasConstraintName("FK__Payment__Payment__7E37BEF6");
             });
 
             modelBuilder.Entity<PaymentType>(entity =>
