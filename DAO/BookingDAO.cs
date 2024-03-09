@@ -16,6 +16,12 @@ namespace DataAccess
             _context = context;
         }
 
+        // Get User Booking History
+        public IEnumerable<Booking> GetBookingsForUser(string userId)
+        {
+            return _context.Bookings.Where(b => b.UserId == userId).ToList();
+        }
+
         public IEnumerable<Booking> GetAllBookings()
         {
             try
@@ -87,6 +93,30 @@ namespace DataAccess
                 Console.WriteLine($"Error in DeleteBooking: {ex.Message}");
                 throw;
             }
+        }
+
+        // Check if the room is booked yet
+        public bool IsRoomAlreadyBooked(string roomId, DateTime? date, string time)
+        {
+            return _context.Bookings.Any(b => b.LocationId == roomId && b.DateBooking == date && b.Time == time);
+        }
+
+        // Calculate Booking Total Price
+        public double CalculateTotalPrice(string roomId, string serviceId)
+        {
+            var roomPrice = _context.Rooms
+                .Where(r => r.LocationId == roomId)
+                .Select(r => r.Price)
+                .FirstOrDefault() ?? 0;
+
+            var serviceTotalPrice = _context.Services
+                .Where(s => s.ServiceId == serviceId)
+                .Select(s =>
+                    (s.Food != null ? s.Food.Price : 0) +
+                    (s.Item != null ? s.Item.Price : 0))
+                .FirstOrDefault();
+
+            return (double)(roomPrice + serviceTotalPrice);
         }
     }
 }

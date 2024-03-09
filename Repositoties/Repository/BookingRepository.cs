@@ -30,7 +30,36 @@ namespace Repositoties.Repository
 
         public void AddBooking(Booking booking)
         {
+            // Check room availability for the specified date and time
+            if (_bookingDAO.IsRoomAlreadyBooked(booking.LocationId, booking.DateBooking ?? DateTime.MinValue, booking.Time))
+            {
+                throw new InvalidOperationException("The room is not available for the selected date and time.");
+            }
+
+            // Check kid age
+            if (CalculateAge(booking.KidBirthDay) >= 16)
+            {
+                throw new InvalidOperationException("Kid age must be below 16 for booking.");
+            }
+            // Calculate total price
+            booking.TotalPrice = _bookingDAO.CalculateTotalPrice(booking.LocationId, booking.ServiceId);
             _bookingDAO.AddBooking(booking);
+        }
+
+        private int CalculateAge(DateTime? birthdate)
+        {
+            if (birthdate.HasValue)
+            {
+                DateTime today = DateTime.Today;
+                int age = today.Year - birthdate.Value.Year;
+                if (birthdate.Value.Date > today.AddYears(-age))
+                {
+                    age--;
+                }
+                return age;
+            }
+
+            return 0; // Default age if birthdate is null
         }
 
         public void UpdateBooking(Booking booking)
@@ -42,5 +71,11 @@ namespace Repositoties.Repository
         {
             _bookingDAO.DeleteBooking(bookingId);
         }
+
+        public IEnumerable<Booking> GetBookingsForUser(string userId)
+        {
+            return _bookingDAO.GetBookingsForUser(userId);
+        }
+      
     }
 }
