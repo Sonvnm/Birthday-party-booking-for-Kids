@@ -22,8 +22,8 @@ namespace Repositoties.Repository
         public IList<User> GetUserByName(string username)
         => UserDAO.SearchByName(username);
 
-        public User Login(string username, string password)
-        => UserDAO.Login(username, password);
+        public User Login(string email, string password)
+        => UserDAO.Login(email, password);
 
         public void Register(User user)
         => UserDAO.Register(user);

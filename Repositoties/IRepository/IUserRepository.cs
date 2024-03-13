@@ -9,7 +9,7 @@ namespace Repositoties.IRepository
 {
     public interface IUserRepository
     {
-        User Login(string username,string password);
+        User Login(string email,string password);
         void Register(User user);
         void Delete(User user);
         void Update(User user);

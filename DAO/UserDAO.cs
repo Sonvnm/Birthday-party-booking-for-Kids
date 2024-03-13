@@ -12,10 +12,10 @@ namespace DataAccess
 {
     public class UserDAO
     {
-        public static User Login(string Username, string password)
+        public static User Login(string email, string password)
         {
             using var context = new BirthdayPartyBookingForKids_DBContext();
-            return context.Users.SingleOrDefault(c => c.UserName == Username && c.Password == password);
+            return context.Users.SingleOrDefault(c => c.Email == email && c.Password == password);
         }
         public static IList<BusinessObject.Models.User> GetAllUser()
         {

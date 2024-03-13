@@ -14,11 +14,11 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         private readonly IUserRepository repo = new UserRepository();
 
         [HttpPost("Login")]
-        public IActionResult Login(string username,  string password)
+        public IActionResult Login(string email,  string password)
         {
             try
             {
-                User user = repo.Login(username, password);
+                User user = repo.Login(email, password);
                 if (user != null) { return Ok(user); }
                 else { return NotFound(); }
             }
@@ -27,6 +27,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
         [HttpPost("Register")]
         public ActionResult<User> Register(string UserName, string email, string password)
+            //tạo models riêng, đăng ký là username, pass, tuổi, email
         {
             var a = new User { UserName = UserName, Email = email, Password = password };
             try
