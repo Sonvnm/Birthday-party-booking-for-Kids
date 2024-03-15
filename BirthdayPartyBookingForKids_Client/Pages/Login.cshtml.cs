@@ -40,7 +40,7 @@ namespace BirthdayPartyBookingForKids_Client.Pages
                         PropertyNameCaseInsensitive = true
                     };
                     var result = JsonSerializer.Deserialize<BusinessObject.Models.User>(strData, options);
-                    HttpContext.Session.SetInt32("id", result.UserId);
+                    HttpContext.Session.SetString("id", result.UserId);
                     return RedirectToPage("/User_Page/Index");
                 }
                 if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
