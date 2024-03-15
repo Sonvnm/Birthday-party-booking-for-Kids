@@ -45,19 +45,29 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             return NoContent();
         }*/
         [HttpPost]
-        public ActionResult<Payment> PostPayment(Payment payment) 
+        public ActionResult<Payment> PostPayment(string paymentId, string bankName, string bankId, string paymentTypeId, int amount, string bookingId)
         {
             try
             {
+                Payment payment = new Payment
+                {
+                    PaymentId = paymentId,
+                    BankName = bankName,
+                    BankId = bankId,
+                    PaymentTypeId = paymentTypeId,
+                    Amount = amount,
+                    BookingId = bookingId
+                };
                 repo.Save(payment);
                 return Ok();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                if(paymentExist == null)
+                if (paymentExist == null)
                 {
                     return NotFound();
                 }
-                return Ok(payment);
+                return Ok();
             }
         }
         private bool paymentExist(string paymentId)
