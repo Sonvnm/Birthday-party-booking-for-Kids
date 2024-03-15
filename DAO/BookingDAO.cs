@@ -96,9 +96,9 @@ namespace DataAccess
         }
 
         // Check if the room is booked yet
-        public bool IsRoomAlreadyBooked(string roomId, DateTime? date, string time)
+        public bool IsRoomAlreadyBooked(string locationId, DateTime? date, string time)
         {
-            return _context.Bookings.Any(b => b.LocationId == roomId && b.DateBooking == date && b.Time == time);
+            return _context.Bookings.Any(b => b.LocationId == locationId && b.DateBooking == date && b.Time == time);
         }
 
         // Calculate Booking Total Price

@@ -49,23 +49,9 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-builder.Services.AddSwaggerGen();
-
 // Register repositories and DAO
 /*builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<BookingDAO>();*/
-
-
-
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
 builder.Services.AddAuthentication(options =>
 {
@@ -91,6 +77,18 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("UserPolicy", policy => policy.RequireRole("User"));
     options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
 });
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

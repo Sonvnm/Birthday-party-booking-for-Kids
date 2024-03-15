@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BirthdayPartyBookingForKids
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Repositoties", "Repositoties\Repositoties.csproj", "{470EA9BF-40F6-487E-8A97-138545889949}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BirthdayPartyBookingForKids_Client", "BirthdayPartyBookingForKids_Client\BirthdayPartyBookingForKids_Client.csproj", "{3948CB6D-9242-495F-AD1C-AA101F5DBD85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BirthdayPartyBookingForKids_Client", "BirthdayPartyBookingForKids_Client\BirthdayPartyBookingForKids_Client.csproj", "{3948CB6D-9242-495F-AD1C-AA101F5DBD85}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

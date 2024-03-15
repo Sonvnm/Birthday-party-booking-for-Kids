@@ -30,11 +30,6 @@ namespace Repositoties.Repository
 
         public void AddBooking(Booking booking)
         {
-            // Check room availability for the specified date and time
-            if (_bookingDAO.IsRoomAlreadyBooked(booking.LocationId, booking.DateBooking ?? DateTime.MinValue, booking.Time))
-            {
-                throw new InvalidOperationException("The room is not available for the selected date and time.");
-            }
 
             // Check kid age
             if (CalculateAge(booking.KidBirthDay) >= 16)
@@ -76,6 +71,10 @@ namespace Repositoties.Repository
         {
             return _bookingDAO.GetBookingsForUser(userId);
         }
-      
+
+        public bool IsRoomAlreadyBooked(string locationId, DateTime date, string time)
+        {
+            return _bookingDAO.IsRoomAlreadyBooked(locationId, date, time);
+        }
     }
 }
