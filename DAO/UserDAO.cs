@@ -24,7 +24,7 @@ namespace DataAccess
             {
                 using (var context = new BirthdayPartyBookingForKids_DBContext())
                 {
-                    listUsers = context.Users.ToList();
+                    listUsers = context.Users.Include(o => o.Role).ToList();
                 }
             }
             catch (Exception ex)

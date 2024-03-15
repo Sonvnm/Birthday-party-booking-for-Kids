@@ -27,7 +27,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             try
             {
                 repo.Update(payment);
-            }catch(Exception ex)
+            }catch(Exception    ex)
             {
                 return NoContent();
             }
