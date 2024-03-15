@@ -29,7 +29,7 @@ namespace DataAccess
             return list;
         }
 
-        public static Decoration GetDecorationById(int id)
+        public static Decoration GetDecorationById(string id)
         {
             Decoration decoration = new();
 

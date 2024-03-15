@@ -12,6 +12,12 @@ namespace BirthdayPartyBookingForKids_API.Controllers
     public class DecorationController : ControllerBase
     {
         private readonly IDecorationRepository repo = new DecorationRepository();
+        public class DecorationModel
+        {
+            public string ItemName { get; set; }
+            public string Description { get; set; }
+            public double? Price { get; set; }
+        }
 
         [HttpGet("GetAllDecoration")]
         public ActionResult<IList<Decoration>> GetAllDecoration()
@@ -21,7 +27,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Decoration> GetDecorationById(int id)
+        public ActionResult<Decoration> GetDecorationById(string id)
         {
             var decoration = repo.GetDecorationById(id);
             if (decoration == null)
@@ -45,9 +51,9 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         }
 
         [HttpPost("Add")]
-        public ActionResult<Decoration> Add(string ItemName, string Description, double? Price) 
+        public ActionResult<Decoration> Add(string ItemId, string ItemName, string Description, double? Price) 
         {
-            var dec = new Decoration {  ItemName = ItemName, Description = Description, Price = Price };
+            var dec = new Decoration {  ItemId= ItemId, ItemName = ItemName, Description = Description, Price = Price };
             try
             {
                 repo.Add(dec);
@@ -60,22 +66,23 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         } 
 
         [HttpPut("{id}")]
-        public IActionResult PutDecoration(int id, Decoration decoration)
+        public IActionResult PutDecoration(string id, DecorationModel model)
         {
-            if(id.Equals(decoration.ItemId))
+            var decoration = repo.GetDecorationById(id);
+            if (decoration == null)
             {
-                return BadRequest();
-            }
-
-            var dec1 = repo.GetDecorationById(id);
-            if (dec1 == null)
                 return NotFound();
+            }
+            
+            decoration.ItemName = model.ItemName;
+            decoration.Description = model.Description;
+            decoration.Price = model.Price;
             repo.Update(decoration);
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public  IActionResult DeleteDecoration(int id)
+        public  IActionResult DeleteDecoration(string id)
         {
             var decoration = repo.GetDecorationById(id);
             if (decoration == null)
