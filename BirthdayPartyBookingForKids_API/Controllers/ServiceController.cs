@@ -1,6 +1,7 @@
 ﻿using BusinessObject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Repositoties.IRepository;
 using Repositoties.Repository;
 
@@ -12,6 +13,15 @@ namespace BirthdayPartyBookingForKids_API.Controllers
     {
         private readonly IServiceRepository repo = new ServiceRepository();
 
+        public class ServiceModel
+        {
+            public string ServiceName { get; set; }
+            public string Description { get; set; }
+            public string FoodId { get; set; }
+            public string ItemId { get; set; }
+            public double? TotalPrice { get; set; }
+        }
+
         [HttpGet("GetAllService")]
         public ActionResult<IList<Service>> GetAllServices()
         {
@@ -20,7 +30,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Service> GetServiceById(int id)
+        public ActionResult<Service> GetServiceById(string id)
         {
             var service = repo.GetServiceById(id);
             if (service == null)
@@ -43,23 +53,41 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             return Ok(decoration);
         }
 
-        [HttpPut("{id}")]
-        public IActionResult PutService(int id, Service service)
+        [HttpPost("Add")]
+        public ActionResult<Service> Add(string ServiceId, string ServiceName, string Description, string FoodId, string ItemId, double TotalPrice)
         {
-            if (id.Equals(service.ServiceId))
+            var sev = new Service { ServiceId = ServiceId, ServiceName = ServiceName, Description = Description, FoodId = FoodId, ItemId = ItemId, TotalPrice = TotalPrice };
+            try
+            {
+                repo.Add(sev);
+                return Ok(sev);
+            }
+            catch (DbUpdateException)
             {
                 return BadRequest();
             }
+        }
 
-            var sv1 = repo.GetServiceById(id);
-            if (sv1 == null)
+        [HttpPut("{id}")]
+        public IActionResult PutService(string id, ServiceModel model)
+        {
+            var service = repo.GetServiceById(id);
+            if (service == null)
+            {
                 return NotFound();
-            repo.Update(sv1);
+            }
+
+            service.ServiceName = model.ServiceName;
+            service.Description = model.Description;
+            service.FoodId = model.FoodId;
+            service.ItemId = model.ItemId;
+            service.TotalPrice = model.TotalPrice;
+            repo.Update(service);
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteService(int id)
+        public IActionResult DeleteService(string id)
         {
             var service = repo.GetServiceById(id);
             if (service == null)

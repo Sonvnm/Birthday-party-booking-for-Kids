@@ -17,7 +17,7 @@ namespace Repositoties.Repository
 
         public IList<Decoration> GetAllDecorations() => DecorationDAO.GetDecorations();
 
-        public Decoration GetDecorationById(int id) => DecorationDAO.GetDecorationById(id);
+        public Decoration GetDecorationById(string id) => DecorationDAO.GetDecorationById(id);
 
         public IList<Decoration> GetDecorationsByName(string name) => DecorationDAO.SearchByName(name);
 

@@ -13,7 +13,7 @@ namespace Repositoties.IRepository
         void Delete(Decoration decoration);
         void Update(Decoration decoration);
         IList<Decoration> GetAllDecorations();
-        Decoration GetDecorationById(int id);
+        Decoration GetDecorationById(string id);
         IList<Decoration> GetDecorationsByName(string name);
     }
 }

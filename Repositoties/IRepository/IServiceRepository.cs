@@ -13,7 +13,7 @@ namespace Repositoties.IRepository
         void Delete(Service service);
         void Update(Service service);
         IList<Service> GetAllServices();
-        Service GetServiceById(int id);
+        Service GetServiceById(string id);
         IList<Service> GetServicesByName(string name);
     }
 }

@@ -29,7 +29,7 @@ namespace DataAccess
             return list;
         }
 
-        public static Service GetServiceById(int id)
+        public static Service GetServiceById(string id)
         {
             Service sv = new();
 
