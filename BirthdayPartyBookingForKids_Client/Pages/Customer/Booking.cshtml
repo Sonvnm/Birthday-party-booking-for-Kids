@@ -1,0 +1,44 @@
+﻿@page "/Booking"
+@model BirthdayPartyBookingForKids_Client.Pages.BookingModel
+@{
+}
+
+<h1>Booking Page</h1>
+
+<form method="post" asp-controller="Booking asp-action="Post">
+    <!-- Add input fields for booking details -->
+    <label>Kid' Fullname:</label>
+    <input type="text" asp-for="Booking.KidName" required />
+    <label>Kid' Birthday:</label>
+    <input type="date" asp-for="Booking.KidBirthDay" required />
+    <label>Kid' Gender:</label>
+    <input type="text" asp-for="Booking.KidGender" required />
+    <label>Date:</label>
+    <input type="date" asp-for="Booking.DateBooking" required />
+    <label>Participate Amount:</label>
+    <input type="number" asp-for="Booking.ParticipateAmount" required />
+    <!-- Display available menu items -->
+
+    @*<label>Choose Food Items:</label>
+    @foreach (var menu in Model.AvailableMenus)
+    {
+        <div>
+            <input type="checkbox" name="SelectedFoods" value="@menu.FoodName" />
+            <label>@menu.FoodName</label>
+        </div>
+    }*@
+
+    <div class="form-group">
+        <label asp-for="Booking.SelectedFoods">Choose food item:</label>
+        <select asp-for="Booking.SelectedFoods" class="form-control" asp-items="@(new SelectList(Model.AvailableMenus, "FoodId", "FoodName"))">
+            <option value="">Select food item</option>
+        </select>
+        <span asp-validation-for="Booking.SelectedFoods" class="text-danger"></span>
+    </div>
+
+
+    
+    <!-- Add other input fields... -->
+
+    <button type="submit">Submit Booking</button>
+</form>

@@ -3,6 +3,7 @@
     "BirthdayPartyBookingForKids_Client": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "Booking",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.OData.Formatter;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.EntityFrameworkCore;
 using Repositoties.IRepository;
+using System.Security.Claims;
 
 namespace BirthdayPartyBookingForKids_API.Controllers
 {
@@ -29,8 +31,26 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         {
             try
             {
-                var bookings = _bookingRepository.GetAllBookings();
-                return Ok(bookings);
+                // Check if the user is an admin
+                if (User.IsInRole("Admin"))
+                {
+                    // Admin has full authority, retrieve all bookings
+                    var allBookings = _bookingRepository.GetAllBookings();
+                    return Ok(allBookings);
+                }
+
+                // For regular users, get their ID from claims
+                var userId = User.FindFirst(ClaimTypes.Name)?.Value;
+
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized("User not authenticated");
+                }
+
+                // Retrieve bookings for the authenticated user only
+                var userBookings = _bookingRepository.GetBookingsForUser(userId);
+
+                return Ok(userBookings);
             }
             catch (Exception ex)
             {
@@ -73,8 +93,21 @@ namespace BirthdayPartyBookingForKids_API.Controllers
                     return BadRequest(ModelState);
                 }
 
+                // Check if the room and time are already booked for the specified date
+                if (_bookingRepository.IsRoomAlreadyBooked(booking.LocationId, booking.DateBooking ?? DateTime.MinValue, booking.Time))
+                {
+                    return BadRequest("This room is already booked for the specified date and time. Please choose another room or time.");
+                }
+
+                // Generate a unique BookingId using a GUID
+                booking.BookingId = Guid.NewGuid().ToString();
+
                 _bookingRepository.AddBooking(booking);
                 return Created(booking);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception ex)
             {
@@ -82,6 +115,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
 
         [HttpPut]
         [ODataRouteComponent("({key})")]
@@ -113,7 +147,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("{bookingId}")]
         [ODataRouteComponent("({key})")]
         public IActionResult Delete([FromODataUri] string key)
         {
