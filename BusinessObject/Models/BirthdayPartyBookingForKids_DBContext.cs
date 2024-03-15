@@ -29,11 +29,6 @@ namespace BusinessObject.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            //            if (!optionsBuilder.IsConfigured)
-            //            {
-            //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-            //                optionsBuilder.UseSqlServer("Server=MSI\\SQLEXPRESS;uid=sa;pwd=12345;database=BirthdayPartyBookingForKids_DB;TrustServerCertificate=True");
-            //            }
             if (!optionsBuilder.IsConfigured)
             {
                 IConfigurationRoot configuration = new ConfigurationBuilder()
@@ -77,28 +72,30 @@ namespace BusinessObject.Models
                     .HasMaxLength(100)
                     .HasColumnName("time");
 
-                entity.Property(e => e.UserId).HasColumnName("UserID");
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(100)
+                    .HasColumnName("UserID");
 
                 entity.HasOne(d => d.Location)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.LocationId)
-                    .HasConstraintName("FK__Booking__Locatio__6477ECF3");
+                    .HasConstraintName("FK__Booking__Locatio__5AEE82B9");
 
                 entity.HasOne(d => d.Service)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.ServiceId)
-                    .HasConstraintName("FK__Booking__Service__656C112C");
+                    .HasConstraintName("FK__Booking__Service__5BE2A6F2");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Bookings)
                     .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__Booking__UserID__6383C8BA");
+                    .HasConstraintName("FK__Booking__UserID__59FA5E80");
             });
 
             modelBuilder.Entity<Decoration>(entity =>
             {
                 entity.HasKey(e => e.ItemId)
-                    .HasName("PK__Decorati__727E83EB9B572F42");
+                    .HasName("PK__Decorati__727E83EB654FE3DF");
 
                 entity.ToTable("Decoration");
 
@@ -114,7 +111,7 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Menu>(entity =>
             {
                 entity.HasKey(e => e.FoodId)
-                    .HasName("PK__Menu__856DB3CB7DE19F7B");
+                    .HasName("PK__Menu__856DB3CB03F2504D");
 
                 entity.ToTable("Menu");
 
@@ -154,12 +151,12 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Booking)
                     .WithMany(p => p.Payments)
                     .HasForeignKey(d => d.BookingId)
-                    .HasConstraintName("FK__Payment__Booking__693CA210");
+                    .HasConstraintName("FK__Payment__Booking__5FB337D6");
 
                 entity.HasOne(d => d.PaymentType)
                     .WithMany(p => p.Payments)
                     .HasForeignKey(d => d.PaymentTypeId)
-                    .HasConstraintName("FK__Payment__Payment__68487DD7");
+                    .HasConstraintName("FK__Payment__Payment__5EBF139D");
             });
 
             modelBuilder.Entity<PaymentType>(entity =>
@@ -187,7 +184,7 @@ namespace BusinessObject.Models
             modelBuilder.Entity<Room>(entity =>
             {
                 entity.HasKey(e => e.LocationId)
-                    .HasName("PK__Room__E7FEA4772AD85C8C");
+                    .HasName("PK__Room__E7FEA477215E80B2");
 
                 entity.ToTable("Room");
 
@@ -223,19 +220,21 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Food)
                     .WithMany(p => p.Services)
                     .HasForeignKey(d => d.FoodId)
-                    .HasConstraintName("FK__Service__FoodID__5DCAEF64");
+                    .HasConstraintName("FK__Service__FoodID__5441852A");
 
                 entity.HasOne(d => d.Item)
                     .WithMany(p => p.Services)
                     .HasForeignKey(d => d.ItemId)
-                    .HasConstraintName("FK__Service__ItemID__5EBF139D");
+                    .HasConstraintName("FK__Service__ItemID__5535A963");
             });
 
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("User");
 
-                entity.Property(e => e.UserId).HasColumnName("UserID");
+                entity.Property(e => e.UserId)
+                    .HasMaxLength(100)
+                    .HasColumnName("UserID");
 
                 entity.Property(e => e.BirthDate).HasColumnType("date");
 
@@ -254,7 +253,7 @@ namespace BusinessObject.Models
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Users)
                     .HasForeignKey(d => d.RoleId)
-                    .HasConstraintName("FK__User__RoleID__5535A963");
+                    .HasConstraintName("FK__User__RoleID__4BAC3F29");
             });
 
             OnModelCreatingPartial(modelBuilder);

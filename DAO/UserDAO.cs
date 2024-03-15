@@ -34,7 +34,7 @@ namespace DataAccess
             return listUsers;
         }
         
-        public static User GetUserByID(int id)
+        public static User GetUserByID(string id)
         {
             User user = new User();
             try
@@ -42,7 +42,7 @@ namespace DataAccess
                 using var context = new BirthdayPartyBookingForKids_DBContext();
                 if (id != null)
                 {
-                    user = context.Users.SingleOrDefault(c => id == c.UserId);
+                    user = context.Users.SingleOrDefault(c => id.Equals(c.UserId));
                 }
             }
             catch (Exception e)

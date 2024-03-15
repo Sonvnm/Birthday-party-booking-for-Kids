@@ -11,7 +11,7 @@ namespace BusinessObject.Models
         }
 
         public string BookingId { get; set; }
-        public int? UserId { get; set; }
+        public string UserId { get; set; }
         public int? ParticipateAmount { get; set; }
         public double? TotalPrice { get; set; }
         public DateTime? DateBooking { get; set; }

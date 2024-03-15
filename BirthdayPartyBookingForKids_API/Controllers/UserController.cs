@@ -64,7 +64,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         }
 
         [HttpPost("Register")]
-        public ActionResult Register(int userId, string userName, string email, string password, DateTime birthDate, string phone, string roleId)
+        public ActionResult Register(string userId, string userName, string email, string password, DateTime birthDate, string phone, string roleId)
         {
 
             try
@@ -96,7 +96,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             return Ok(users);
         }
         [HttpGet("{id}")]
-        public ActionResult<User> GetUserByID(int id)
+        public ActionResult<User> GetUserByID(string id)
         {
             var user = repo.GetUserById(id);
 
@@ -121,7 +121,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult PutUser(int id, User user)
+        public IActionResult PutUser(string id, User user)
         {
             if (id.Equals( user.UserId))
             {
@@ -137,7 +137,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id)
+        public IActionResult DeleteUser(string id)
         {
             var user = repo.GetUserById(id);
             if (user == null)
