@@ -8,25 +8,24 @@ using System.Threading.Tasks;
 namespace DataAccess
 {
     public class BookingDAO
-    {
-        private readonly BirthdayPartyBookingForKids_DBContext _context;
-
-        public BookingDAO(BirthdayPartyBookingForKids_DBContext context)
-        {
-            _context = context;
-        }
+    {      
 
         // Get User Booking History
-        public IEnumerable<Booking> GetBookingsForUser(string userId)
+        public static IList<Booking> GetBookingsForUser(string userId)
         {
-            return _context.Bookings.Where(b => b.UserId == userId).ToList();
+            using var context = new BirthdayPartyBookingForKids_DBContext();
+            return context.Bookings.Where(b => b.UserId == userId).ToList();
         }
 
-        public IEnumerable<Booking> GetAllBookings()
+        public static IList<Booking> GetAllBookings()
         {
+            var listBooking = new List<Booking>();
             try
             {
-                return _context.Bookings.ToList();
+                using (var context = new BirthdayPartyBookingForKids_DBContext())
+                {
+                    listBooking = context.Bookings.ToList();
+                }
             }
             catch (Exception ex)
             {
@@ -34,27 +33,32 @@ namespace DataAccess
                 Console.WriteLine($"Error in GetAllBookings: {ex.Message}");
                 throw; // Re-throw the exception to propagate it
             }
+            return listBooking;
         }
 
-        public Booking GetBookingById(string bookingId)
+        public static IList<Booking> GetBookingById(string bookingId)
         {
+            var listBooking = new List<Booking>();
             try
             {
-                return _context.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
+                using var context = new BirthdayPartyBookingForKids_DBContext();
+                listBooking = context.Bookings.Where(b => b.BookingId== bookingId).ToList();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error in GetBookingById: {ex.Message}");
                 throw;
             }
+            return listBooking;
         }
 
-        public void AddBooking(Booking booking)
+        public static void AddBooking(Booking booking)
         {
             try
             {
-                _context.Bookings.Add(booking);
-                _context.SaveChanges();
+                using var context = new BirthdayPartyBookingForKids_DBContext();
+                context.Bookings.Add(booking);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -63,12 +67,13 @@ namespace DataAccess
             }
         }
 
-        public void UpdateBooking(Booking booking)
+        public static void UpdateBooking(Booking booking)
         {
             try
             {
-                _context.Update(booking);
-                _context.SaveChanges();
+                using var context = new BirthdayPartyBookingForKids_DBContext();
+                context.Update(booking);
+                context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -77,15 +82,16 @@ namespace DataAccess
             }
         }
 
-        public void DeleteBooking(string bookingId)
+        public static void DeleteBooking(string bookingId)
         {
             try
             {
-                var booking = _context.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
+                using var context = new BirthdayPartyBookingForKids_DBContext();
+                var booking = context.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
                 if (booking != null)
                 {
-                    _context.Bookings.Remove(booking);
-                    _context.SaveChanges();
+                    context.Bookings.Remove(booking);
+                    context.SaveChanges();
                 }
             }
             catch (Exception ex)
@@ -96,20 +102,24 @@ namespace DataAccess
         }
 
         // Check if the room is booked yet
-        public bool IsRoomAlreadyBooked(string locationId, DateTime? date, string time)
+        public static bool IsRoomAlreadyBooked(string locationId, DateTime? date, string time)
         {
-            return _context.Bookings.Any(b => b.LocationId == locationId && b.DateBooking == date && b.Time == time);
+            using var context = new BirthdayPartyBookingForKids_DBContext();
+
+            return context.Bookings.Any(b => b.LocationId == locationId && b.DateBooking == date && b.Time == time);
         }
 
         // Calculate Booking Total Price
-        public double CalculateTotalPrice(string roomId, string serviceId)
+        public static double CalculateTotalPrice(string roomId, string serviceId)
         {
-            var roomPrice = _context.Rooms
+            using var context = new BirthdayPartyBookingForKids_DBContext();
+
+            var roomPrice = context.Rooms
                 .Where(r => r.LocationId == roomId)
                 .Select(r => r.Price)
                 .FirstOrDefault() ?? 0;
 
-            var serviceTotalPrice = _context.Services
+            var serviceTotalPrice = context.Services
                 .Where(s => s.ServiceId == serviceId)
                 .Select(s =>
                     (s.Food != null ? s.Food.Price : 0) +

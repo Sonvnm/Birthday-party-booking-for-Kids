@@ -1,4 +1,6 @@
 ﻿using BusinessObject.Models;
+using DataAccess;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Deltas;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Repositoties.IRepository;
+using Repositoties.Repository;
 using System.Security.Claims;
 
 namespace BirthdayPartyBookingForKids_API.Controllers
@@ -17,12 +20,14 @@ namespace BirthdayPartyBookingForKids_API.Controllers
     [ODataRouteComponent("Bookings")]
     public class BookingController : ODataController
     {
-        private readonly IBookingRepository _bookingRepository;
+        /*private BookingRepository _bookingRepository;
 
-        public BookingController(IBookingRepository bookingRepository)
+        public BookingController(BookingRepository bookingRepository)
         {
             _bookingRepository = bookingRepository;
-        }
+        }*/
+
+        private readonly IBookingRepository repo = new BookingRepository();
 
         [HttpGet("GetAllBooking")]
         [EnableQuery]
@@ -32,15 +37,15 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             try
             {
                 // Check if the user is an admin
-                if (User.IsInRole("Admin"))
+                if (User.IsInRole("1"))
                 {
                     // Admin has full authority, retrieve all bookings
-                    var allBookings = _bookingRepository.GetAllBookings();
+                    var allBookings = repo.GetAllBookings();
                     return Ok(allBookings);
                 }
 
                 // For regular users, get their ID from claims
-                var userId = User.FindFirst(ClaimTypes.Name)?.Value;
+                var userId = User.FindFirst("UserId")?.Value;
 
                 if (string.IsNullOrEmpty(userId))
                 {
@@ -48,7 +53,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
                 }
 
                 // Retrieve bookings for the authenticated user only
-                var userBookings = _bookingRepository.GetBookingsForUser(userId);
+                var userBookings = repo.GetBookingsForUser(userId);
 
                 return Ok(userBookings);
             }
@@ -66,7 +71,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         {
             try
             {
-                var booking = _bookingRepository.GetBookingById(key);
+                var booking = repo.GetBookingById(key);
 
                 if (booking == null)
                 {
@@ -94,7 +99,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
                 }
 
                 // Check if the room and time are already booked for the specified date
-                if (_bookingRepository.IsRoomAlreadyBooked(booking.LocationId, booking.DateBooking ?? DateTime.MinValue, booking.Time))
+                if (repo.IsRoomAlreadyBooked(booking.LocationId, booking.DateBooking ?? DateTime.MinValue, booking.Time))
                 {
                     return BadRequest("This room is already booked for the specified date and time. Please choose another room or time.");
                 }
@@ -102,7 +107,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
                 // Generate a unique BookingId using a GUID
                 booking.BookingId = Guid.NewGuid().ToString();
 
-                _bookingRepository.AddBooking(booking);
+                repo.AddBooking(booking);
                 return Created(booking);
             }
             catch (InvalidOperationException ex)
@@ -128,15 +133,15 @@ namespace BirthdayPartyBookingForKids_API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var booking = _bookingRepository.GetBookingById(key);
+                var booking = repo.GetBookingById(key);
 
                 if (booking == null)
                 {
                     return NotFound();
                 }
 
-                bookingDelta.Patch(booking);
-                _bookingRepository.UpdateBooking(booking);
+                bookingDelta.Patch((Booking)booking);
+                repo.UpdateBooking((Booking)booking);
 
                 return Updated(booking);
             }
@@ -153,14 +158,14 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         {
             try
             {
-                var booking = _bookingRepository.GetBookingById(key);
+                var booking = repo.GetBookingById(key);
 
                 if (booking == null)
                 {
                     return NotFound();
                 }
 
-                _bookingRepository.DeleteBooking(key);
+                repo.DeleteBooking(key);
 
                 return NoContent();
             }
