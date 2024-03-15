@@ -8,14 +8,15 @@ CREATE TABLE Role (
     RoleName nvarchar(50)
 );
 CREATE TABLE [User] (
-    [UserID] nvarchar(100) PRIMARY KEY,
+    [UserID] int identity(1,1) PRIMARY KEY,
     UserName nvarchar(100),
     Email nvarchar(100),
     Password nvarchar(50),
 	BirthDate date,
     Phone nvarchar(11),
-    RoleID nvarchar(20) REFERENCES [Role] (RoleID)
-	
+	RoleID nvarchar(20),
+    FOREIGN KEY (RoleID) REFERENCES [Role] (RoleID)
+	 
 );
 
 CREATE TABLE Decoration (
@@ -57,10 +58,10 @@ CREATE TABLE PaymentType (
 CREATE TABLE Booking (
 /*booking hợp với bookingdetail*/
     BookingID nvarchar(100) PRIMARY KEY,
-    UserID nvarchar(100),
+    UserID int,
+	FOREIGN KEY (UserID) REFERENCES [User](UserID),
     ParticipateAmount int,
     TotalPrice float,
-    FOREIGN KEY (UserID) REFERENCES [User](UserID),
     DateBooking date,
     LocationID nvarchar(100) REFERENCES Room(LocationID),
 	ServiceID nvarchar(100) REFERENCES Service(ServiceID),

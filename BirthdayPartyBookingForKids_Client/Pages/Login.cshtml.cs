@@ -28,33 +28,35 @@ namespace BirthdayPartyBookingForKids_Client.Pages
                 HttpClient client = new();
                 var contentType = new MediaTypeWithQualityHeaderValue("application/json");
                 client.DefaultRequestHeaders.Accept.Add(contentType);
-                string CustomerApiUrl = "https://localhost:7212/api/User/Login";
+                string CustomerApiUrl = "http://localhost:5297/api/User/Login";
                 string param = $"?email={Login.Email}&password={Login.Password}";
                 HttpContent content = new StringContent(param, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync(CustomerApiUrl + param, content);
-                //if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                //{
-                //    string strData = await response.Content.ReadAsStringAsync();
-                //    var options = new JsonSerializerOptions
-                //    {
-                //        PropertyNameCaseInsensitive = true
-                //    };
-                //    var result = JsonSerializer.Deserialize<BusinessObject.Models.User>(strData, options);
-                //    HttpContext.Session.SetInt32("id", result.UserId);
-                //    return RedirectToPage("/User/Index");
-                //}
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    string strData = await response.Content.ReadAsStringAsync();
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    var result = JsonSerializer.Deserialize<BusinessObject.Models.User>(strData, options);
+                    HttpContext.Session.SetInt32("id", result.UserId);
+                    return RedirectToPage("/User_Page/Index");
+                }
                 if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
                 {
-                    return RedirectToPage("/User/Index");
+                    return RedirectToPage("/User_Page/Index");
                 }
                 else
                 {
+                    //return RedirectToPage("/User_Page/Index");
                     Message = "Incorrect email or password";
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                //Console.WriteLine(e.Message);
+                return RedirectToPage("/Error");
             }
 
             return Page();

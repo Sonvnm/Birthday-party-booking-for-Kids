@@ -2,11 +2,11 @@
 using BusinessObject.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using User = BusinessObject.Models.User;
 
 namespace DataAccess
 {
@@ -33,15 +33,17 @@ namespace DataAccess
             }
             return listUsers;
         }
-        public static BusinessObject.Models.User GetUserByID(int id)
+        
+        public static User GetUserByID(int id)
         {
-            var list = new List<BusinessObject.Models.User>();
-            BusinessObject.Models.User user = new();
-
+            User user = new User();
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
-                user = list.SingleOrDefault(c => c.UserId.Equals(id));
+                if (id != null)
+                {
+                    user = context.Users.SingleOrDefault(c => id == c.UserId);
+                }
             }
             catch (Exception e)
             {
