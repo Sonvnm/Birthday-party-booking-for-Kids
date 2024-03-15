@@ -15,7 +15,7 @@ namespace DataAccess
         public static User Login(string Username, string password)
         {
             using var context = new BirthdayPartyBookingForKids_DBContext();
-            return context.Users.SingleOrDefault(c => c.UserName == Username && c.Password == password);
+            return context.Users.FirstOrDefault(c => c.Email == Username && c.Password == password);
         }
         public static IList<BusinessObject.Models.User> GetAllUser()
         {
@@ -24,7 +24,7 @@ namespace DataAccess
             {
                 using (var context = new BirthdayPartyBookingForKids_DBContext())
                 {
-                    listUsers = context.Users.Include(o => o.Role).ToList();
+                    listUsers = context.Users.ToList();
                 }
             }
             catch (Exception ex)
@@ -33,7 +33,7 @@ namespace DataAccess
             }
             return listUsers;
         }
-        public static BusinessObject.Models.User GetUserByID(int id)
+        public static BusinessObject.Models.User GetUserByID(string id)
         {
             var list = new List<BusinessObject.Models.User>();
             BusinessObject.Models.User user = new();

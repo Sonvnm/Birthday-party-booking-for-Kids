@@ -1,9 +1,17 @@
-﻿using BusinessObject.Models;
+﻿using BirthdayPartyBookingForKids_Client.ViewModels;
+using BusinessObject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Attributes;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Repositoties.IRepository;
 using Repositoties.Repository;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace BirthdayPartyBookingForKids_API.Controllers
 {
@@ -11,18 +19,52 @@ namespace BirthdayPartyBookingForKids_API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository repo = new UserRepository();
+        private IUserRepository repo = new UserRepository();
+        private readonly IConfiguration configuration;
+        public UserController(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
 
         [HttpPost("Login")]
-        public IActionResult Login(string username,  string password)
+        public IActionResult Login(string email, string password)
         {
             try
             {
-                User user = repo.Login(username, password);
-                if (user != null) { return Ok(user); }
+                User user = repo.Login(email, password);
+                if (user != null)
+                {
+                    return Ok(new ApiResponse
+                    {
+                        Success = true,
+                        Message = "Authenticate success",
+                        Data = GenerateToken(user)
+                    });
+                }
                 else { return NotFound(); }
             }
             catch (Exception ex) { return BadRequest(ex.Message); }
+        }
+        private string GenerateToken(User user)
+        {
+            var JwtTokenHandler = new JwtSecurityTokenHandler();
+            var secretKeyBytes = Encoding.UTF8.GetBytes(configuration["SecretKey"]);
+            var tokenDescription = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.Email, user.Email),
+                    new Claim("User Name", user.UserName),
+                    new Claim("Email", user.Email)
+                }),
+                Expires = DateTime.UtcNow.AddMinutes(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(secretKeyBytes), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = JwtTokenHandler.CreateToken(tokenDescription);
+
+            return JwtTokenHandler.WriteToken(token);
+
         }
 
         [HttpPost("Register")]
@@ -50,13 +92,15 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             }
         }
         [HttpGet("GetAllUser")]
+        [EnableQuery]
+        [ODataRouteComponent]
         public ActionResult<IList<User>> GetAllUser()
         {
             IList<User> users = repo.GetAllUser();
             return Ok(users);
         }
         [HttpGet("{id}")]
-        public ActionResult<User> GetUserByID(int id)
+        public ActionResult<User> GetUserByID(string id)
         {
             var user = repo.GetUserById(id);
 
@@ -81,9 +125,9 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult PutUser(int id, User user)
+        public IActionResult PutUser(string id, User user)
         {
-            if (id.Equals( user.UserId))
+            if (id.Equals(user.UserId))
             {
                 return BadRequest();
             }
@@ -97,7 +141,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id)
+        public IActionResult DeleteUser(string id)
         {
             var user = repo.GetUserById(id);
             if (user == null)

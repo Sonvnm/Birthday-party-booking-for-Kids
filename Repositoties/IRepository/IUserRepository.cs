@@ -14,7 +14,7 @@ namespace Repositoties.IRepository
         void Delete(User user);
         void Update(User user);
         IList<User> GetAllUser();
-        User GetUserById(int id);
+        User GetUserById(string id);
         IList<User> GetUserByName(string username);
     }
 }

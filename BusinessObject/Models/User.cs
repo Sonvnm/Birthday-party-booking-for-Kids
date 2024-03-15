@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace BusinessObject.Models
 {
@@ -17,7 +18,7 @@ namespace BusinessObject.Models
         public DateTime? BirthDate { get; set; }
         public string Phone { get; set; }
         public string RoleId { get; set; }
-
+        [JsonIgnore]
         public virtual Role Role { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
     }
