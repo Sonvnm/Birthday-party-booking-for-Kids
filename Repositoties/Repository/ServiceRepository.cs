@@ -17,7 +17,7 @@ namespace Repositoties.Repository
 
         public IList<Service> GetAllServices() => ServiceDAO.GetServices();
 
-        public Service GetServiceById(int id) => ServiceDAO.GetServiceById(id);
+        public Service GetServiceById(string id) => ServiceDAO.GetServiceById(id);
 
         public IList<Service> GetServicesByName(string name) => ServiceDAO.SearchByName(name);
 
