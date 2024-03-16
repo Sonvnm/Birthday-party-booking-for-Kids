@@ -14,29 +14,29 @@ namespace BirthdayPartyBookingForKids_Client.Pages
             _configuration = configuration;
             _logger = logger;
 
-            AvailableMenus = GetAvailableMenusAsync().Result;
-
+/*            AvailableMenus = GetAvailableMenusAsync().Result;
+*/
         }
 
         [BindProperty]
         public Booking Booking { get; set; }
 
         // Store the available menu items
-        public List<Menu> AvailableMenus { get; set; }
+        /*public List<Menu> AvailableMenus { get; set; }
 
         // Store the selected food items
         [BindProperty]
-        public string[] SelectedFoods { get; set; }
+        public string[] SelectedFoods { get; set; }*/
 
 
         public async Task<IActionResult> OnPostAsync()
         {
             try
             {
-                AvailableMenus = await GetAvailableMenusAsync();
+                /*AvailableMenus = await GetAvailableMenusAsync();
 
                 // Assign the selected food items to the Booking model
-                Booking.SelectedFoods = await GetSelectedFoodsAsync();
+                Booking.SelectedFoods = await GetSelectedFoodsAsync();*/
 
                 // Submit the booking data to the BookingController
                 using (HttpClient client = new HttpClient())
@@ -62,12 +62,12 @@ namespace BirthdayPartyBookingForKids_Client.Pages
                 ModelState.AddModelError(string.Empty, "An error occurred. Please try again later.");
             }
 
-            AvailableMenus = await GetAvailableMenusAsync();
-
+/*            AvailableMenus = await GetAvailableMenusAsync();
+*/
             return Page();
         }
 
-        private async Task<List<Menu>> GetAvailableMenusAsync()
+        /*private async Task<List<Menu>> GetAvailableMenusAsync()
         {
             // Implement logic to retrieve available menu items
             // This could involve fetching menu items from your API or another data source
@@ -86,9 +86,9 @@ namespace BirthdayPartyBookingForKids_Client.Pages
                 // Handle error or return an empty list
                 return new List<Menu>();
             }
-        }
+        }*/
 
-        private async Task<List<Menu>> GetSelectedFoodsAsync()
+        /*private async Task<List<Menu>> GetSelectedFoodsAsync()
         {
             // Implement logic to retrieve selected food items based on the selected IDs
             // This could involve fetching menu items from your API or another data source
@@ -107,7 +107,7 @@ namespace BirthdayPartyBookingForKids_Client.Pages
                 // Handle error or return an empty list
                 return new List<Menu>();
             }
-        }
+        }*/
     }
 
 

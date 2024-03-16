@@ -5,7 +5,7 @@
 
 <h1>Booking Page</h1>
 
-<form method="post" asp-controller="Booking asp-action="Post">
+<form method="post" asp-controller="Booking" asp-action="Post">
     <!-- Add input fields for booking details -->
     <label>Kid' Fullname:</label>
     <input type="text" asp-for="Booking.KidName" required />
@@ -28,13 +28,13 @@
         </div>
     }*@
 
-    <div class="form-group">
+    @*<div class="form-group">
         <label asp-for="Booking.SelectedFoods">Choose food item:</label>
         <select asp-for="Booking.SelectedFoods" class="form-control" asp-items="@(new SelectList(Model.AvailableMenus, "FoodId", "FoodName"))">
             <option value="">Select food item</option>
         </select>
         <span asp-validation-for="Booking.SelectedFoods" class="text-danger"></span>
-    </div>
+    </div>*@
 
 
     
