@@ -25,7 +25,7 @@ namespace DataAccess
             return listRooms;
         }
 
-        public static Room GetRoomByID(int id)
+        public static Room GetRoomByID(string id)
         {
             var room = new Room();
             try

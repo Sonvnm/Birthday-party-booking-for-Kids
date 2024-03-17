@@ -1,4 +1,5 @@
-﻿using BusinessObject.Models;
+﻿using BirthdayPartyBookingForKids_API.Helpers;
+using BusinessObject.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,16 +15,27 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         private readonly IUserRepository repo = new UserRepository();
 
         [HttpPost("Login")]
-        public IActionResult Login(string username,  string password)
+        public IActionResult Login(string username, string password)
         {
             try
             {
                 User user = repo.Login(username, password);
-                if (user != null) { return Ok(user); }
-                else { return NotFound(); }
+                if (user != null)
+                {
+                    var token = AuthenticationHelper.GenerateJwtToken(user, "birthday-booking-party-project-secret-key", "birthday-booking-party-issuer", "birthday-booking-party-audience");
+                    return Ok(new { Token = token });
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-            catch (Exception ex) { return BadRequest(ex.Message); }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+
 
         [HttpPost("Register")]
         public ActionResult<User> Register(string UserName, string email, string password)

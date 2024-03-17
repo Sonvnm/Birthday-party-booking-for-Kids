@@ -11,22 +11,17 @@ namespace Repositoties.Repository
 {
     public class BookingRepository : IBookingRepository
     {
-        private readonly BookingDAO _bookingDAO;
+        /*private readonly BookingDAO _bookingDAO;
 
         public BookingRepository(BookingDAO bookingDAO)
         {
             _bookingDAO = bookingDAO;
-        }
+        }*/
 
-        public IEnumerable<Booking> GetAllBookings()
-        {
-            return _bookingDAO.GetAllBookings();
-        }
+        public IList<Booking> GetAllBookings() => BookingDAO.GetAllBookings();
 
-        public Booking GetBookingById(string bookingId)
-        {
-            return _bookingDAO.GetBookingById(bookingId);
-        }
+        public IList<Booking> GetBookingById(string bookingId) => BookingDAO.GetBookingById(bookingId);
+        
 
         public void AddBooking(Booking booking)
         {
@@ -37,8 +32,8 @@ namespace Repositoties.Repository
                 throw new InvalidOperationException("Kid age must be below 16 for booking.");
             }
             // Calculate total price
-            booking.TotalPrice = _bookingDAO.CalculateTotalPrice(booking.LocationId, booking.ServiceId);
-            _bookingDAO.AddBooking(booking);
+            booking.TotalPrice = BookingDAO.CalculateTotalPrice(booking.LocationId, booking.ServiceId);
+            BookingDAO.AddBooking(booking);
         }
 
         private int CalculateAge(DateTime? birthdate)
@@ -57,24 +52,15 @@ namespace Repositoties.Repository
             return 0; // Default age if birthdate is null
         }
 
-        public void UpdateBooking(Booking booking)
-        {
-            _bookingDAO.UpdateBooking(booking);
-        }
+        public void UpdateBooking(Booking booking) => BookingDAO.UpdateBooking(booking);
+        
 
-        public void DeleteBooking(string bookingId)
-        {
-            _bookingDAO.DeleteBooking(bookingId);
-        }
+        public void DeleteBooking(string bookingId) => BookingDAO.DeleteBooking(bookingId);
+        
 
-        public IEnumerable<Booking> GetBookingsForUser(string userId)
-        {
-            return _bookingDAO.GetBookingsForUser(userId);
-        }
+        public IList<Booking> GetBookingsForUser(string userId) => BookingDAO.GetBookingsForUser(userId);
 
-        public bool IsRoomAlreadyBooked(string locationId, DateTime date, string time)
-        {
-            return _bookingDAO.IsRoomAlreadyBooked(locationId, date, time);
-        }
+
+        public bool IsRoomAlreadyBooked(string locationId, DateTime date, string time) => BookingDAO.IsRoomAlreadyBooked(locationId, date, time);
     }
 }

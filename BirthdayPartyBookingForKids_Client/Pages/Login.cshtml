@@ -1,0 +1,27 @@
+﻿@page "/Login"
+@model BirthdayPartyBookingForKids_Client.Pages.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label>Username:</label>
+        <input type="text" id="username" name="UserName" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label >Password:</label>
+        <input type="password" id="password" name="Password" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Login</button>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <p>@Model.ErrorMessage</p>
+}
+
+

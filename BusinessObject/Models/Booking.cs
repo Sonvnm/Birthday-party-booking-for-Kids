@@ -26,7 +26,6 @@ namespace BusinessObject.Models
         public virtual Room Location { get; set; }
         public virtual Service Service { get; set; }
         public virtual User User { get; set; }
-        public virtual ICollection<Menu> SelectedFoods { get; set; }
         public virtual ICollection<Payment> Payments { get; set; }
     }
 }

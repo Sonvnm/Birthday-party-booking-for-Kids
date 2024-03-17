@@ -17,7 +17,7 @@ namespace Repositoties.Repository
         public List<Room> GetAllRooms()
         =>RoomDAO.GetAllRooms();
 
-        public Room GetRoomById(int roomId)
+        public Room GetRoomById(string roomId)
         =>RoomDAO.GetRoomByID(roomId);
 
         public void SaveRoom(Room room)

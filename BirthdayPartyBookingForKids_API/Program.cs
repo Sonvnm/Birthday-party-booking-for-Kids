@@ -16,6 +16,17 @@ modelBuilder.EntitySet<Booking>("Bookings");
 modelBuilder.EntityType<Menu>().HasKey(menu => menu.FoodId);
 modelBuilder.EntitySet<Menu>("Menus");
 
+// Register repositories and DAO
+/*builder.Services.AddScoped<BookingDAO>();
+builder.Services.AddTransient<IBookingRepository, BookingRepository>();
+
+builder.Services.AddDbContext<BirthdayPartyBookingForKids_DBContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});*/
+
+
+
 // Add services to the container.
 builder.Services.AddControllers().AddOData(
     options => options.Select().Filter().OrderBy().Expand().Count().SetMaxTop(null).AddRouteComponents(
@@ -49,9 +60,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-// Register repositories and DAO
-/*builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-builder.Services.AddScoped<BookingDAO>();*/
+
 
 builder.Services.AddAuthentication(options =>
 {
@@ -74,8 +83,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("UserPolicy", policy => policy.RequireRole("User"));
-    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("CustomerPolicy", policy => policy.RequireRole("2"));
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("1"));
 });
 
 var app = builder.Build();
