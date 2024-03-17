@@ -17,6 +17,9 @@
         <input type="password" id="password" name="Password" class="form-control" required />
     </div>
     <button type="submit" class="btn btn-primary">Login</button>
+    <div>
+        <a asp-page="/Register">Register an account?</a>
+    </div>
 </form>
 
 @if (!string.IsNullOrEmpty(Model.ErrorMessage))

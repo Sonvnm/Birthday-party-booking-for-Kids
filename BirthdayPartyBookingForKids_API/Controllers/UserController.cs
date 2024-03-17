@@ -38,13 +38,23 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
 
         [HttpPost("Register")]
-        public ActionResult<User> Register(string UserName, string email, string password)
+        public ActionResult Register(string userId, string userName, string email, string password, DateTime birthDate, string phone, string roleId)
         {
-            var a = new User { UserName = UserName, Email = email, Password = password };
+
             try
             {
-                repo.Register(a);
-                return Ok(a);
+                User newUser = new User
+                {
+                    UserId = userId,
+                    UserName = userName,
+                    Email = email,
+                    Password = password,
+                    BirthDate = birthDate,
+                    Phone = phone,
+                    RoleId = roleId
+                };
+                repo.Register(newUser);
+                return Ok();
             }
             catch (DbUpdateException)
             {
