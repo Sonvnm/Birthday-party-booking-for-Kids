@@ -16,7 +16,7 @@ namespace Repositoties.Repository
         public IList<User> GetAllUser()
             => UserDAO.GetAllUser();
 
-        public User GetUserById(int id)
+        public User GetUserById(string id)
         => UserDAO.GetUserByID(id);
 
         public IList<User> GetUserByName(string username)
