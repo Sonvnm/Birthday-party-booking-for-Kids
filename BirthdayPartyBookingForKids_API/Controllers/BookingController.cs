@@ -87,28 +87,58 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("CreateBooking")]
         [ODataRouteComponent]
-        public IActionResult Post([FromBody] Booking booking)
+        public ActionResult CreateBooking(string userId,int participateAmount,double totalPrice,DateTime dateBooking,string locationId,string serviceId,DateTime kidBirthday, string kidName, string kidGender,string time,int status)
         {
+            string bookingId = Guid.NewGuid().ToString();
+
             try
             {
+                Booking newBooking = new Booking
+                {
+                    BookingId = bookingId,
+                    UserId = userId,
+                    ParticipateAmount = participateAmount,
+                    TotalPrice = totalPrice,
+                    DateBooking = dateBooking,
+                    LocationId = locationId,
+                    ServiceId = serviceId,
+                    KidBirthDay= kidBirthday,
+                    KidName= kidName,
+                    KidGender= kidGender,
+                    Time= time,
+                    Status = status
+                };
+                repo.AddBooking(newBooking);
+                return Ok(newBooking);
+            }
+            catch(Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
+
+            /*try
+            {
+                // Remove the UserId from the model since it's passed as a parameter
+                model.UserId = HttpContext.Request.Query["userId"].ToString(); // Assuming userId is the parameter name
+
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState);
                 }
 
                 // Check if the room and time are already booked for the specified date
-                if (repo.IsRoomAlreadyBooked(booking.LocationId, booking.DateBooking ?? DateTime.MinValue, booking.Time))
+                if (repo.IsRoomAlreadyBooked(model.LocationId, model.DateBooking ?? DateTime.MinValue, model.Time))
                 {
                     return BadRequest("This room is already booked for the specified date and time. Please choose another room or time.");
                 }
 
                 // Generate a unique BookingId using a GUID
-                booking.BookingId = Guid.NewGuid().ToString();
+                model.BookingId = Guid.NewGuid().ToString();
 
-                repo.AddBooking(booking);
-                return Created(booking);
+                repo.AddBooking(model);
+                return Created(model);
             }
             catch (InvalidOperationException ex)
             {
@@ -118,8 +148,11 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             {
                 Console.WriteLine($"Error in Post Booking: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
-            }
+            }*/
         }
+
+
+
 
 
         [HttpPut]

@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +51,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             return Ok(decoration);
         }
 
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPost("Add")]
         public ActionResult<Decoration> Add(string ItemId, string ItemName, string Description, double? Price) 
         {
@@ -63,8 +65,9 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             {
                 return BadRequest();
             }
-        } 
+        }
 
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPut("{id}")]
         public IActionResult PutDecoration(string id, DecorationModel model)
         {
@@ -81,6 +84,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "AdminPolicy")]
         [HttpDelete("{id}")]
         public  IActionResult DeleteDecoration(string id)
         {

@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repositoties.IRepository;
@@ -6,6 +7,7 @@ using Repositoties.Repository;
 
 namespace BirthdayPartyBookingForKids_API.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class RoomController : ControllerBase
@@ -25,6 +27,8 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             }
             return Ok(room);
         }
+
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPost("Post new Room")]
         public IActionResult PostRoom(string LocationID, string LocationName, String Description, double Price)
         {
@@ -37,6 +41,8 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             repo.SaveRoom(room);
             return Ok(room);
         }
+
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPut("UpdateRoom")]
         public IActionResult UpdateRoom(int id, Room room)
         {
@@ -48,6 +54,8 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             repo.UpdateRoom(room);
             return Ok(room);
         }
+
+        [Authorize(Policy = "AdminPolicy")]
         [HttpDelete("DeleteRoom")]
         public IActionResult DeleteRoom(int id, Room room) 
         {

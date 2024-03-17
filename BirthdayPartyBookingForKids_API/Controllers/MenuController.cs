@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
@@ -26,6 +27,8 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             }
             return Ok(menu);
         }
+
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPost("Post new Menu")]
         public ActionResult<Menu> PostMenu(Menu menu)
         {
@@ -33,6 +36,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             return CreatedAtAction(nameof(GetMenuByID), new { id = menu.FoodId }, menu);
         }
 
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPut("UpdateMenu")]
         public IActionResult UpdateRoom(int id, Menu menu)
         {
@@ -44,6 +48,8 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             repo.UpdateMenu(menu);
             return Ok(menu);
         }
+
+        [Authorize(Policy = "AdminPolicy")]
         [HttpDelete("DeleteRoom{id}")]
         public IActionResult DeleteMenu(int id, Menu menu)
         {

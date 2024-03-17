@@ -1,6 +1,8 @@
 using BusinessObject.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using static BirthdayPartyBookingForKids_API.Controllers.ServiceController;
 
 namespace BirthdayPartyBookingForKids_Client.Pages
 {
@@ -8,107 +10,82 @@ namespace BirthdayPartyBookingForKids_Client.Pages
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<BookingModel> _logger;
+        private readonly HttpClient _httpClient;
 
-        public BookingModel(IConfiguration configuration, ILogger<BookingModel> logger)
+        public BookingModel(IConfiguration configuration, ILogger<BookingModel> logger, HttpClient httpClient)
         {
             _configuration = configuration;
             _logger = logger;
-
-/*            AvailableMenus = GetAvailableMenusAsync().Result;
-*/
+            _httpClient = httpClient;
         }
 
         [BindProperty]
         public Booking Booking { get; set; }
 
-        // Store the available menu items
-        /*public List<Menu> AvailableMenus { get; set; }
+        public string ErrorMessage { get; set; }
 
-        // Store the selected food items
-        [BindProperty]
-        public string[] SelectedFoods { get; set; }*/
+        public IEnumerable<SelectListItem> Locations { get; private set; }
+        public IEnumerable<SelectListItem> Services { get; private set; }
 
-
-        public async Task<IActionResult> OnPostAsync()
+        public async Task OnGetAsync()
         {
-            try
-            {
-                /*AvailableMenus = await GetAvailableMenusAsync();
-
-                // Assign the selected food items to the Booking model
-                Booking.SelectedFoods = await GetSelectedFoodsAsync();*/
-
-                // Submit the booking data to the BookingController
-                using (HttpClient client = new HttpClient())
-                {
-                    // Adjust the URL based on your project structure and routing
-                    string apiUrl = $"{_configuration["ApiBaseUrl"]}/api/Booking/SubmitBooking";
-                    HttpResponseMessage response = await client.PostAsJsonAsync(apiUrl, Booking);
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return RedirectToPage("/Confirmation");
-                    }
-                    else
-                    {
-                        _logger.LogError($"Failed to submit booking: {response.ReasonPhrase}");
-                        ModelState.AddModelError(string.Empty, "Failed to submit booking. Please try again later.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Exception occurred: {ex.Message}");
-                ModelState.AddModelError(string.Empty, "An error occurred. Please try again later.");
-            }
-
-/*            AvailableMenus = await GetAvailableMenusAsync();
-*/
-            return Page();
+            await LoadLocationsAsync();
+            await LoadServicesAsync();
         }
 
-        /*private async Task<List<Menu>> GetAvailableMenusAsync()
+        private async Task LoadLocationsAsync()
         {
-            // Implement logic to retrieve available menu items
-            // This could involve fetching menu items from your API or another data source
-
-            // For simplicity, let's assume you have a method in your API for getting all menus
-            using (HttpClient client = new HttpClient())
+            var apiUrl = $"{_configuration["ApiBaseUrl"]}/api/Room/ListRoom";
+            var response = await _httpClient.GetAsync(apiUrl);
+            if (response.IsSuccessStatusCode)
             {
-                string apiUrl = $"{_configuration["ApiBaseUrl"]}/api/MenuController/GetAllMenus";
-                HttpResponseMessage response = await client.GetAsync(apiUrl);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return await response.Content.ReadFromJsonAsync<List<Menu>>();
-                }
-
-                // Handle error or return an empty list
-                return new List<Menu>();
+                var rooms = await response.Content.ReadFromJsonAsync<IEnumerable<Room>>();
+                Locations = ConvertToSelectListItems(rooms);
             }
-        }*/
+            else
+            {
+                _logger.LogError($"Failed to fetch rooms: {response.ReasonPhrase}");
+            }
+        }
 
-        /*private async Task<List<Menu>> GetSelectedFoodsAsync()
+        private async Task LoadServicesAsync()
         {
-            // Implement logic to retrieve selected food items based on the selected IDs
-            // This could involve fetching menu items from your API or another data source
-
-            // For simplicity, let's assume you have a method in your API for getting menus by IDs
-            using (HttpClient client = new HttpClient())
+            var apiUrl = $"{_configuration["ApiBaseUrl"]}/api/Service/GetAllService";
+            var response = await _httpClient.GetAsync(apiUrl);
+            if (response.IsSuccessStatusCode)
             {
-                string apiUrl = $"{_configuration["ApiBaseUrl"]}/api/MenuController/GetMenuByID";
-                HttpResponseMessage response = await client.PostAsJsonAsync(apiUrl, SelectedFoods);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return await response.Content.ReadFromJsonAsync<List<Menu>>();
-                }
-
-                // Handle error or return an empty list
-                return new List<Menu>();
+                var services = await response.Content.ReadFromJsonAsync<IEnumerable<Service>>();
+                Services = ConvertToSelectListItems(services);
             }
-        }*/
+            else
+            {
+                _logger.LogError($"Failed to fetch services: {response.ReasonPhrase}");
+            }
+        }
+
+        private IEnumerable<SelectListItem> ConvertToSelectListItems(IEnumerable<Room> rooms)
+        {
+            // Convert Room Model objects to SelectListItem objects
+            var selectListItems = new List<SelectListItem>();
+            foreach (var room in rooms)
+            {
+                selectListItems.Add(new SelectListItem { Value = room.LocationId.ToString(), Text = room.LocationName });
+            }
+            return selectListItems;
+        }
+
+        private IEnumerable<SelectListItem> ConvertToSelectListItems(IEnumerable<Service> services)
+        {
+            // Convert Service Model objects to SelectListItem objects
+            var selectListItems = new List<SelectListItem>();
+            foreach (var service in services)
+            {
+                selectListItems.Add(new SelectListItem { Value = service.ServiceId.ToString(), Text = service.ServiceName });
+            }
+            return selectListItems;
+        }
     }
+
 
 
 }

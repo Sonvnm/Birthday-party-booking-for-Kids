@@ -1,9 +1,11 @@
 ﻿using BusinessObject.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Repositoties.IRepository;
 using Repositoties.Repository;
+using System.Data;
 
 namespace BirthdayPartyBookingForKids_API.Controllers
 {
@@ -53,6 +55,8 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             return Ok(decoration);
         }
 
+
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPost("Add")]
         public ActionResult<Service> Add(string ServiceId, string ServiceName, string Description, string FoodId, string ItemId, double TotalPrice)
         {
@@ -68,6 +72,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             }
         }
 
+        [Authorize(Policy = "AdminPolicy")]
         [HttpPut("{id}")]
         public IActionResult PutService(string id, ServiceModel model)
         {
@@ -86,6 +91,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             return Ok();
         }
 
+        [Authorize(Policy = "AdminPolicy")]
         [HttpDelete("{id}")]
         public IActionResult DeleteService(string id)
         {
