@@ -10,7 +10,7 @@ namespace Repositoties.IRepository
     public interface IRoomRepository
     {
         void SaveRoom(Room room);
-        Room GetRoomById(int roomId);
+        Room GetRoomById(string roomId);
         void DeleteRoom(Room room);
         void UpdateRoom(Room room);
         List<Room> GetAllRooms();

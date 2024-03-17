@@ -1,0 +1,31 @@
+﻿@page "/BookingSuccessShow"
+@using BusinessObject.Models;
+@model BirthdayPartyBookingForKids_Client.Pages.Customer.BookingSuccessShowModel
+@{
+	ViewData["Title"] = "Booking Success";
+	var bookingInfo = TempData["BookingInfo"] as Booking;
+	string totalPrice = TempData["TotalPrice"]?.ToString();
+}
+
+<h1>Booking Successful!</h1>
+@if (bookingInfo != null)
+{
+    <h2>Booking Information</h2>
+    <div>
+        <p><strong>Participate Amount:</strong> @bookingInfo.ParticipateAmount</p>
+        <p><strong>Date of Booking:</strong> @bookingInfo.DateBooking</p>
+        <p><strong>Location:</strong> @bookingInfo.LocationId</p>
+        <p><strong>Service:</strong> @bookingInfo.ServiceId</p>
+        <p><strong>Kid's Birthday:</strong> @bookingInfo.KidBirthDay</p>
+        <p><strong>Kid's Name:</strong> @bookingInfo.KidName</p>
+        <p><strong>Kid's Gender:</strong> @bookingInfo.KidGender</p>
+        <p><strong>Time:</strong> @bookingInfo.Time</p>
+        <p><strong>Total Price:</strong> @totalPrice</p>
+    </div>
+}
+else
+{
+    <div class="alert alert-danger">Booking information not available.</div>
+}
+
+<a href="/Booking" class="btn btn-primary">Return to Booking</a>

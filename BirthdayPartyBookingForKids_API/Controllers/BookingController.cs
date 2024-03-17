@@ -28,6 +28,8 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         }*/
 
         private readonly IBookingRepository repo = new BookingRepository();
+        private readonly IRoomRepository rRepo = new RoomRepository();
+        private readonly IServiceRepository iRepo = new ServiceRepository();
 
         [HttpGet("GetAllBooking")]
         [EnableQuery]
@@ -89,13 +91,29 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
         [HttpPost("CreateBooking")]
         [ODataRouteComponent]
-        public ActionResult CreateBooking(string userId,int participateAmount,double totalPrice,DateTime dateBooking,string locationId,string serviceId,DateTime kidBirthday, string kidName, string kidGender,string time,int status)
+        public ActionResult CreateBooking(string userId,int participateAmount,DateTime dateBooking,string locationId,string serviceId,DateTime kidBirthday, string kidName, string kidGender,string time)
         {
             string bookingId = Guid.NewGuid().ToString();
-
+            int status = 1;
             try
             {
-                Booking newBooking = new Booking
+				var room = rRepo.GetRoomById(locationId);
+				var service = iRepo.GetServiceById(serviceId);
+
+				if (room == null)
+				{
+					return BadRequest("Invalid room ID.");
+				}
+
+				if (service == null)
+				{
+					return BadRequest("Invalid service ID.");
+				}
+
+				// Calculate total price as the sum of room price and service price
+				double totalPrice = (room.Price ?? 0) + (service.TotalPrice ?? 0);
+
+				Booking newBooking = new Booking
                 {
                     BookingId = bookingId,
                     UserId = userId,

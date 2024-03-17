@@ -8,41 +8,51 @@
 
 <form method="post">
     <div class="form-group">
-        <label for="location">Location:</label>
-        <select class="form-control" id="location" asp-for="Booking.LocationId" asp-items="Model.Locations">
+        <label>Location:</label>
+        <select class="form-control" id="location" name="locationId" asp-items="Model.Locations">
             <option value="">Select Location</option>
         </select>
     </div>
     <div class="form-group">
-        <label for="service">Service:</label>
-        <select class="form-control" id="service" asp-for="Booking.ServiceId" asp-items="Model.Services">
+        <label>Service:</label>
+        <select class="form-control" id="service" name="serviceId" asp-items="Model.Services">
             <option value="">Select Service</option>
         </select>
     </div>
     <div class="form-group">
-        <label for="participateAmount">Participate Amount:</label>
-        <input type="number" class="form-control" id="participateAmount" asp-for="Booking.ParticipateAmount">
+        <label>Participate Amount:</label>
+        <input type="number" class="form-control" id="participateAmount" name="participateAmount">
     </div>
     <div class="form-group">
-        <label for="kidBirthDay">Kid's Birthday:</label>
-        <input type="date" class="form-control" id="kidBirthDay" asp-for="Booking.KidBirthDay">
+        <label>Booking Date:</label>
+        <input type="date" class="form-control" id="dateBooking" name="dateBooking">
     </div>
     <div class="form-group">
-        <label for="kidName">Kid's Name:</label>
-        <input type="text" class="form-control" id="kidName" asp-for="Booking.KidName">
+        <label>Kid's Birthday:</label>
+        <input type="date" class="form-control" id="kidBirthDay" name="kidBirthday">
     </div>
     <div class="form-group">
-        <label for="kidGender">Kid's Gender:</label>
-        <select class="form-control" id="kidGender" asp-for="Booking.KidGender">
+        <label>Kid's Name:</label>
+        <input type="text" class="form-control" id="kidName" name="kidName">
+    </div>
+    <div class="form-group">
+        <label>Kid's Gender:</label>
+        <select class="form-control" id="kidGender" name="kidGender">
             <option value="Male">Male</option>
             <option value="Female">Female</option>
         </select>
     </div>
     <div class="form-group">
-        <label for="time">Time:</label>
-        <input type="time" class="form-control" id="time" asp-for="Booking.Time">
+        <label>Time:</label>
+        <select class="form-control" id="time" name="time">
+            <option value="8:00am - 13:00pm">8:00am - 13:00pm</option>
+            <option value="15:00pm - 20:00pm">15:00pm - 20:00pm</option>
+        </select>
     </div>
-    <button type="submit" class="btn btn-primary">Book</button>
+
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary">Book</button>
+    </div>
 </form>
 
 @if (!string.IsNullOrEmpty(Model.ErrorMessage))

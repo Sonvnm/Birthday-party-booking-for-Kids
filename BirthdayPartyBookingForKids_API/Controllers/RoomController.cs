@@ -18,7 +18,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         public ActionResult<IEnumerable<Room>> GetAllRoom() => repo.GetAllRooms();
 
         [HttpGet("{id}")]
-        public ActionResult<Room>GetRoomByID(int id)
+        public ActionResult<Room>GetRoomByID(string id)
         {
             var room = repo.GetRoomById(id);
             if (room == null)
@@ -44,7 +44,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
         [Authorize(Policy = "AdminPolicy")]
         [HttpPut("UpdateRoom")]
-        public IActionResult UpdateRoom(int id, Room room)
+        public IActionResult UpdateRoom(string id, Room room)
         {
             var getroom = repo.GetRoomById(id);
             if(getroom == null)
@@ -57,7 +57,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
         [Authorize(Policy = "AdminPolicy")]
         [HttpDelete("DeleteRoom")]
-        public IActionResult DeleteRoom(int id, Room room) 
+        public IActionResult DeleteRoom(string id, Room room) 
         {
             var getroom = repo.GetRoomById(id);
             if (getroom == null)
