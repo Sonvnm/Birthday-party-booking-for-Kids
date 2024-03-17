@@ -39,6 +39,13 @@ namespace BirthdayPartyBookingForKids_Client.Pages
 
         [BindProperty]
         public UserViewModel UserViewModel { get; set; }
+        public object UserId { get; private set; }
+        public object UserName { get; private set; }
+        public object Email { get; private set; }
+        public object Password { get; private set; }
+        public object BirthDay { get; private set; }
+        public object Phone { get; private set; }
+        public object RoleId { get; private set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -48,7 +55,7 @@ namespace BirthdayPartyBookingForKids_Client.Pages
             }
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-            string ApiUrl = $"{_configuration["ApiBaseUrl"]}/api/User/Register";
+            string ApiUrl = $"{_configuration["ApiBaseUrl"]}/api/User/Register??userId={UserId}&userName={UserName}&email={Email}&password={Password}&birthDate={BirthDay}&phone={Phone}&roleId={RoleId}";
             var user = new User
             {
                 UserId = UserViewModel.UserId,
