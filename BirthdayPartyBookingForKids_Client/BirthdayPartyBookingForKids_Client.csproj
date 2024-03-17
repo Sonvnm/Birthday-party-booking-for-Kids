@@ -20,8 +20,4 @@
     <ProjectReference Include="..\BirthdayPartyBookingForKids_API\BirthdayPartyBookingForKids_API.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\Admin\" />
-  </ItemGroup>
-
 </Project>

@@ -77,9 +77,37 @@ namespace BirthdayPartyBookingForKids_Client.Pages
 
         private string GetRoleFromToken(string token)
         {
-            var claims = new JwtSecurityTokenHandler().ReadJwtToken(token).Claims;
+            /*var claims = new JwtSecurityTokenHandler().ReadJwtToken(token).Claims;
             var roleClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-            return roleClaim ?? "2"; 
+            return roleClaim ?? "2"*/;
+
+            /*var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+
+            if (jsonToken != null)
+            {
+                var claims = new ClaimsPrincipal(new ClaimsIdentity(jsonToken.Claims));
+                var roleClaim = claims.FindFirst(ClaimTypes.Role)?.Value;
+                return roleClaim ?? "2"; // Default to "2" if role claim not found
+            }
+            else
+            {
+                return "2"; 
+            }*/
+
+            var claims = new JwtSecurityTokenHandler().ReadJwtToken(token).Claims;
+            var roleClaim = claims.FirstOrDefault(c => c.Type == "role")?.Value;
+
+            if (roleClaim == null)
+            {
+                _logger.LogError("Role claim not found in token.");
+            }
+            else
+            {
+                _logger.LogInformation($"Role claim found: {roleClaim}");
+            }
+
+            return roleClaim ?? "2";
         }
 
         private IActionResult RedirectToRoleSpecificPage(string token)
@@ -89,7 +117,7 @@ namespace BirthdayPartyBookingForKids_Client.Pages
             // Redirect based on user role
             if (role == "1")
             {
-                return RedirectToPage("/Admin");
+                return RedirectToPage("/Admin/Index");
             }
             else if (role == "2")
             {
