@@ -5,7 +5,7 @@
 }
 
 <h1>Booking</h1>
-
+<a asp-page="/Login">Logout</a>
 <form method="post">
     <div class="form-group">
         <label>Location:</label>
@@ -53,6 +53,7 @@
     <div class="text-center mt-4">
         <button type="submit" class="btn btn-primary">Book</button>
     </div>
+    
 </form>
 
 @if (!string.IsNullOrEmpty(Model.ErrorMessage))
