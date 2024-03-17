@@ -38,13 +38,23 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
 
         [HttpPost("Register")]
-        public ActionResult<User> Register(string UserName, string email, string password)
+        public ActionResult Register(string userId, string userName, string email, string password, DateTime birthDate, string phone, string roleId)
         {
-            var a = new User { UserName = UserName, Email = email, Password = password };
+
             try
             {
-                repo.Register(a);
-                return Ok(a);
+                User newUser = new User
+                {
+                    UserId = userId,
+                    UserName = userName,
+                    Email = email,
+                    Password = password,
+                    BirthDate = birthDate,
+                    Phone = phone,
+                    RoleId = roleId
+                };
+                repo.Register(newUser);
+                return Ok();
             }
             catch (DbUpdateException)
             {
@@ -58,7 +68,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             return Ok(users);
         }
         [HttpGet("{id}")]
-        public ActionResult<User> GetUserByID(int id)
+        public ActionResult<User> GetUserByID(string id)
         {
             var user = repo.GetUserById(id);
 
@@ -83,7 +93,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult PutUser(int id, User user)
+        public IActionResult PutUser(string id, User user)
         {
             if (id.Equals( user.UserId))
             {
@@ -99,7 +109,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id)
+        public IActionResult DeleteUser(string id)
         {
             var user = repo.GetUserById(id);
             if (user == null)

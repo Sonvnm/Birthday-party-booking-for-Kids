@@ -33,15 +33,14 @@ namespace DataAccess
             }
             return listUsers;
         }
-        public static BusinessObject.Models.User GetUserByID(int id)
+        public static BusinessObject.Models.User GetUserByID(string id)
         {
-            var list = new List<BusinessObject.Models.User>();
-            BusinessObject.Models.User user = new();
+            User user = new();
 
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
-                user = list.SingleOrDefault(c => c.UserId.Equals(id));
+                user = context.Users.FirstOrDefault(c => c.UserId == id);
             }
             catch (Exception e)
             {

@@ -46,6 +46,7 @@ namespace BirthdayPartyBookingForKids_Client.Pages
 */
                 // Send the login request to the API
                 var apiUrl = $"{_configuration["ApiBaseUrl"]}/api/User/Login?username={UserName}&password={Password}";
+
                 var response = await _httpClient.PostAsync(apiUrl, null);
 
                 if (response.IsSuccessStatusCode)
