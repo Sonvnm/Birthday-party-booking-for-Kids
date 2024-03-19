@@ -91,10 +91,17 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
         [HttpPost("CreateBooking")]
         [ODataRouteComponent]
-        public ActionResult CreateBooking(string userId,int participateAmount,DateTime dateBooking,string locationId,string serviceId,DateTime kidBirthday, string kidName, string kidGender,string time)
+        public ActionResult CreateBooking(int participateAmount,DateTime dateBooking,string locationId,string serviceId,DateTime kidBirthday, string kidName, string kidGender,string time)
         {
             string bookingId = Guid.NewGuid().ToString();
+            string userId = User.FindFirst("UserId")?.Value;
             int status = 1;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest("User ID not found in claims.");
+            }
+
             try
             {
 				var room = rRepo.GetRoomById(locationId);

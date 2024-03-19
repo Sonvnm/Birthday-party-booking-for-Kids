@@ -4,7 +4,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 // Add HttpClient service
-builder.Services.AddHttpClient();
+builder.Services.AddHttpClient("ApiHttpClient", client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]);
+});
 
 builder.Services.AddAuthentication("Cookies")
     .AddCookie("Cookies");

@@ -1,8 +1,10 @@
 using BusinessObject.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using static BirthdayPartyBookingForKids_API.Controllers.ServiceController;
@@ -13,17 +15,33 @@ namespace BirthdayPartyBookingForKids_Client.Pages
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<BookingModel> _logger;
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public BookingModel(IConfiguration configuration, ILogger<BookingModel> logger, HttpClient httpClient)
+        public BookingModel(IConfiguration configuration, ILogger<BookingModel> logger, IHttpClientFactory httpClientFactory)
         {
             _configuration = configuration;
             _logger = logger;
-            _httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
         }
 
         [BindProperty]
         public Booking Booking { get; set; }
+        [BindProperty]
+        public int ParticipateAmount { get; set; }
+        [BindProperty]
+        public DateTime DateBooking { get; set; }
+        [BindProperty]
+        public string LocationId { get; set; }
+        [BindProperty]
+        public string ServiceId { get; set; }
+        [BindProperty]
+        public DateTime KidBirthday { get; set; }
+        [BindProperty]
+        public string KidName { get; set; }
+        [BindProperty]
+        public string KidGender { get; set; }
+        [BindProperty]
+        public string Time { get; set; }
 
         public string ErrorMessage { get; set; }
 
@@ -38,31 +56,51 @@ namespace BirthdayPartyBookingForKids_Client.Pages
 
         private async Task LoadLocationsAsync()
         {
-            var apiUrl = $"{_configuration["ApiBaseUrl"]}/api/Room/ListRoom";
-            var response = await _httpClient.GetAsync(apiUrl);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var rooms = await response.Content.ReadFromJsonAsync<IEnumerable<Room>>();
-                Locations = ConvertToSelectListItems(rooms);
+                var httpClient = _httpClientFactory.CreateClient("ApiHttpClient");
+                var apiUrl = "api/Room/ListRoom"; 
+                var response = await httpClient.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var rooms = await response.Content.ReadFromJsonAsync<IEnumerable<Room>>();
+                    Locations = ConvertToSelectListItems(rooms);
+                }
+                else
+                {
+                    _logger.LogError($"Failed to fetch rooms: {response.ReasonPhrase}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _logger.LogError($"Failed to fetch rooms: {response.ReasonPhrase}");
+                _logger.LogError($"Error loading locations: {ex.Message}");
             }
         }
 
         private async Task LoadServicesAsync()
         {
-            var apiUrl = $"{_configuration["ApiBaseUrl"]}/api/Service/GetAllService";
-            var response = await _httpClient.GetAsync(apiUrl);
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var services = await response.Content.ReadFromJsonAsync<IEnumerable<Service>>();
-                Services = ConvertToSelectListItems(services);
+                // Create an instance of HttpClient using the factory
+                var client = _httpClientFactory.CreateClient("ApiHttpClient");
+
+                var apiUrl = $"{_configuration["ApiBaseUrl"]}/api/Service/GetAllService";
+                var response = await client.GetAsync(apiUrl);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var services = await response.Content.ReadFromJsonAsync<IEnumerable<Service>>();
+                    Services = ConvertToSelectListItems(services);
+                }
+                else
+                {
+                    _logger.LogError($"Failed to fetch services: {response.ReasonPhrase}");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _logger.LogError($"Failed to fetch services: {response.ReasonPhrase}");
+                _logger.LogError($"Error loading services: {ex.Message}");
             }
         }
 
@@ -92,23 +130,26 @@ namespace BirthdayPartyBookingForKids_Client.Pages
         {
             try
             {
-                var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-                var participateAmount = Booking.ParticipateAmount;
-                var dateBooking = Booking.DateBooking;
-                var locationId = Booking.LocationId;
-                var serviceId = Booking.ServiceId;
-                var kidBirthday = Booking.KidBirthDay;
-                var kidName = Booking.KidName;
-                var kidGender = Booking.KidGender;
-                var time = Booking.Time;
+                var userId = User.FindFirst("UserId")?.Value;
+                var apiUrl = $"{_configuration["ApiBaseUrl"]}/api/Booking/CreateBooking?participateAmount={ParticipateAmount}&dateBooking={DateBooking}&locationId={LocationId}&serviceId={ServiceId}&kidBirthday={KidBirthday}&kidName={KidName}&kidGender={KidGender}&time={Time}";
 
-                var apiUrl = $"{_configuration["ApiBaseUrl"]}/api/Booking/CreateBooking?userId={userId}&participateAmount={participateAmount}&dateBooking={dateBooking}&locationId={locationId}&serviceId={serviceId}&kidBirthday={kidBirthday}&kidName={kidName}&kidGender={kidGender}&time={time}";
-/*				var content = new StringContent(JsonConvert.SerializeObject(Booking), Encoding.UTF8, "application/json");
-*/
-                // Make the HTTP POST request
-                var response = await _httpClient.PostAsync(apiUrl, null);
+                // Get the authentication cookie
+                var authenticationCookie = await HttpContext.GetTokenAsync("Cookies", "access_token");
 
-                // Check if the request was successful
+                // Create an HttpClient instance and set the authentication cookie
+                var httpClient = _httpClientFactory.CreateClient();
+                if (!string.IsNullOrEmpty(authenticationCookie))
+                {
+                    httpClient.DefaultRequestHeaders.Add("Cookie", authenticationCookie);
+                }
+
+                /*                var jsonBooking = JsonConvert.SerializeObject(Booking);
+                */
+                /*                var content = new StringContent(jsonBooking, Encoding.UTF8, "application/json");
+                */
+
+                var response = await httpClient.PostAsync(apiUrl, null);
+
                 if (response.IsSuccessStatusCode)
                 {
                     // Read the response content which should contain the booked information
@@ -140,6 +181,7 @@ namespace BirthdayPartyBookingForKids_Client.Pages
                 return Page();
             }
         }
+
 
     }
 
