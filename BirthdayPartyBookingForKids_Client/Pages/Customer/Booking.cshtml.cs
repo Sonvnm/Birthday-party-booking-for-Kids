@@ -131,7 +131,7 @@ namespace BirthdayPartyBookingForKids_Client.Pages
             try
             {
                 var userId = User.FindFirst("UserId")?.Value;
-                var apiUrl = $"{_configuration["ApiBaseUrl"]}/api/Booking/CreateBooking?participateAmount={ParticipateAmount}&dateBooking={DateBooking}&locationId={LocationId}&serviceId={ServiceId}&kidBirthday={KidBirthday}&kidName={KidName}&kidGender={KidGender}&time={Time}";
+                var apiUrl = $"{_configuration["ApiBaseUrl"]}/api/Booking/CreateBooking?userId={userId}&participateAmount={ParticipateAmount}&dateBooking={DateBooking}&locationId={LocationId}&serviceId={ServiceId}&kidBirthday={KidBirthday}&kidName={KidName}&kidGender={KidGender}&time={Time}";
 
                 // Get the authentication cookie
                 var authenticationCookie = await HttpContext.GetTokenAsync("Cookies", "access_token");
