@@ -65,6 +65,7 @@ namespace BirthdayPartyBookingForKids_Client.Pages
                     // Store the token in session or cookies for future use
                     await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(new ClaimsIdentity(new[]
                     {
+                        new Claim("access_token", token),
                         new Claim(ClaimTypes.Name, UserName),
                         new Claim("role", role),
                         new Claim("UserId", userId) 

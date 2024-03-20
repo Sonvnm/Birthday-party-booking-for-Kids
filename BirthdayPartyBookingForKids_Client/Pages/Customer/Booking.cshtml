@@ -8,14 +8,17 @@
 <a asp-page="/Login">Logout</a>
 <form method="post">
     <div class="form-group">
+        <input type="hidden" class="form-control" id="userId" name="UserId" />
+    </div>
+    <div class="form-group">
         <label>Location:</label>
-        <select class="form-control" id="location" name="LocationId" asp-items="Model.Locations">
+        <select class="form-control" id="locationId" name="LocationId" asp-items="Model.Locations">
             <option value="">Select Location</option>
         </select>
     </div>
     <div class="form-group">
         <label>Service:</label>
-        <select class="form-control" id="service" name="ServiceId" asp-items="Model.Services">
+        <select class="form-control" id="serviceId" name="ServiceId" asp-items="Model.Services">
             <option value="">Select Service</option>
         </select>
     </div>

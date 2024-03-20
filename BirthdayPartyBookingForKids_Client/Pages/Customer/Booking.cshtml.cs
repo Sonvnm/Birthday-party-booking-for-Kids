@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using NuGet.Common;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using static BirthdayPartyBookingForKids_API.Controllers.ServiceController;
@@ -26,6 +28,8 @@ namespace BirthdayPartyBookingForKids_Client.Pages
 
         [BindProperty]
         public Booking Booking { get; set; }
+        [BindProperty]
+        public string UserId { get; set; }
         [BindProperty]
         public int ParticipateAmount { get; set; }
         [BindProperty]
@@ -130,25 +134,47 @@ namespace BirthdayPartyBookingForKids_Client.Pages
         {
             try
             {
-                var userId = User.FindFirst("UserId")?.Value;
-                var apiUrl = $"{_configuration["ApiBaseUrl"]}/api/Booking/CreateBooking?userId={userId}&participateAmount={ParticipateAmount}&dateBooking={DateBooking}&locationId={LocationId}&serviceId={ServiceId}&kidBirthday={KidBirthday}&kidName={KidName}&kidGender={KidGender}&time={Time}";
+                /*?participateAmount ={ ParticipateAmount}
+                &dateBooking ={ DateBooking}
+                &locationId ={ LocationId}
+                &serviceId ={ ServiceId}
+                &kidBirthday ={ KidBirthday}
+                &kidName ={ KidName}
+                &kidGender ={ KidGender}
+                &time ={ Time}*/
+
+                var token = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "access_token")?.Value;
+                var claimUser = User.FindFirst("UserId")?.Value;
+                UserId = claimUser;
+                var apiUrl = $"{_configuration["ApiBaseUrl"]}/api/Booking/CreateBooking?userId={UserId}&participateAmount={ParticipateAmount}&dateBooking={DateBooking}&locationId={LocationId}&serviceId={ServiceId}&kidBirthday={KidBirthday}&kidName={KidName}&kidGender={KidGender}&time={Time}";
 
                 // Get the authentication cookie
-                var authenticationCookie = await HttpContext.GetTokenAsync("Cookies", "access_token");
+                /*var requestMessage = new HttpRequestMessage(HttpMethod.Post, apiUrl);
+                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
+*/             
 
                 // Create an HttpClient instance and set the authentication cookie
                 var httpClient = _httpClientFactory.CreateClient();
-                if (!string.IsNullOrEmpty(authenticationCookie))
-                {
-                    httpClient.DefaultRequestHeaders.Add("Cookie", authenticationCookie);
-                }
 
-                /*                var jsonBooking = JsonConvert.SerializeObject(Booking);
-                */
-                /*                var content = new StringContent(jsonBooking, Encoding.UTF8, "application/json");
-                */
+/*                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+*/
+
+                /*if (!string.IsNullOrEmpty(token))
+                {
+                    httpClient.DefaultRequestHeaders.Add("Cookie", token);
+                }*/
 
                 var response = await httpClient.PostAsync(apiUrl, null);
+
+
+                /*var response = await httpClient.SendAsync(requestMessage);*/
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    // Read and log the response content
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    _logger.LogError($"Error response content: {errorContent}");                 
+                }
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -156,12 +182,12 @@ namespace BirthdayPartyBookingForKids_Client.Pages
                     var responseBody = await response.Content.ReadAsStringAsync();
 
                     // Pass the booked information to the success page using TempData
-                    var bookingInfo = JsonConvert.DeserializeObject<Booking>(responseBody);
-
-                    double totalPrice = (double)(bookingInfo.Location.Price + bookingInfo.Service.TotalPrice);
-
-                    TempData["BookingInfo"] = bookingInfo;
-                    TempData["TotalPrice"] = totalPrice.ToString("C");
+/*                    var bookingInfo = JsonConvert.DeserializeObject<Booking>(responseBody);
+*/
+/*                    double totalPrice = (double)(bookingInfo.Location.Price + bookingInfo.Service.TotalPrice);
+*/
+              /*      TempData["BookingInfo"] = bookingInfo;
+                    TempData["TotalPrice"] = totalPrice.ToString("C");*/
 
                     // Redirect to the success page
                     return RedirectToPage("/Customer/BookingSuccessShow");

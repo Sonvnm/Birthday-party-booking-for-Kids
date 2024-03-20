@@ -5,7 +5,7 @@ namespace BirthdayPartyBookingForKids_Client.Pages.Customer
 {
     public class BookingSuccessShowModel : PageModel
     {
-		public string BookingInfo { get; set; }
+		/*public string BookingInfo { get; set; }
 
 		public IActionResult OnGet()
         {
@@ -20,7 +20,7 @@ namespace BirthdayPartyBookingForKids_Client.Pages.Customer
             }
 
             return Page();
-        }
+        }*/
 
     }
 }
