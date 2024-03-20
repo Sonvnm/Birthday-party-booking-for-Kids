@@ -8,43 +8,46 @@
 <a asp-page="/Login">Logout</a>
 <form method="post">
     <div class="form-group">
+        <input type="hidden" class="form-control" id="userId" name="UserId" />
+    </div>
+    <div class="form-group">
         <label>Location:</label>
-        <select class="form-control" id="location" name="locationId" asp-items="Model.Locations">
+        <select class="form-control" id="locationId" name="LocationId" asp-items="Model.Locations">
             <option value="">Select Location</option>
         </select>
     </div>
     <div class="form-group">
         <label>Service:</label>
-        <select class="form-control" id="service" name="serviceId" asp-items="Model.Services">
+        <select class="form-control" id="serviceId" name="ServiceId" asp-items="Model.Services">
             <option value="">Select Service</option>
         </select>
     </div>
     <div class="form-group">
         <label>Participate Amount:</label>
-        <input type="number" class="form-control" id="participateAmount" name="participateAmount">
+        <input type="number" class="form-control" id="participateAmount" name="ParticipateAmount">
     </div>
     <div class="form-group">
         <label>Booking Date:</label>
-        <input type="date" class="form-control" id="dateBooking" name="dateBooking">
+        <input type="date" class="form-control" id="dateBooking" name="DateBooking">
     </div>
     <div class="form-group">
         <label>Kid's Birthday:</label>
-        <input type="date" class="form-control" id="kidBirthDay" name="kidBirthday">
+        <input type="date" class="form-control" id="kidBirthDay" name="KidBirthDay">
     </div>
     <div class="form-group">
         <label>Kid's Name:</label>
-        <input type="text" class="form-control" id="kidName" name="kidName">
+        <input type="text" class="form-control" id="kidName" name="KidName">
     </div>
     <div class="form-group">
         <label>Kid's Gender:</label>
-        <select class="form-control" id="kidGender" name="kidGender">
+        <select class="form-control" id="kidGender" name="KidGender">
             <option value="Male">Male</option>
             <option value="Female">Female</option>
         </select>
     </div>
     <div class="form-group">
         <label>Time:</label>
-        <select class="form-control" id="time" name="time">
+        <select class="form-control" id="time" name="Time">
             <option value="8:00am - 13:00pm">8:00am - 13:00pm</option>
             <option value="15:00pm - 20:00pm">15:00pm - 20:00pm</option>
         </select>

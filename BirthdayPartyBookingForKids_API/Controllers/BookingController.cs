@@ -94,7 +94,14 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         public ActionResult CreateBooking(string userId,int participateAmount,DateTime dateBooking,string locationId,string serviceId,DateTime kidBirthday, string kidName, string kidGender,string time)
         {
             string bookingId = Guid.NewGuid().ToString();
-            int status = 1;
+/*            userId = User.FindFirst("UserId")?.Value;
+*/            int status = 1;
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest("User ID not found in claims.");
+            }
+
             try
             {
 				var room = rRepo.GetRoomById(locationId);

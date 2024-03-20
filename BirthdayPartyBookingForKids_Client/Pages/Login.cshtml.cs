@@ -34,6 +34,9 @@ namespace BirthdayPartyBookingForKids_Client.Pages
 
         [BindProperty]
         public string Password { get; set; }
+/*        [BindProperty]
+*//*        public User User { get; set; }
+*/        /*public string UserId { get; set; }*/
         public string ErrorMessage { get; set; }
 
 
@@ -55,8 +58,18 @@ namespace BirthdayPartyBookingForKids_Client.Pages
                     var tokenResponse = await response.Content.ReadFromJsonAsync<LoginResponse>();
                     var token = tokenResponse.Token;
 
+                    // Extract claim value 
+                    var role = GetClaimValueFromToken(token, "role");
+                    var userId = GetClaimValueFromToken(token, "UserId");
+
                     // Store the token in session or cookies for future use
-                    await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, UserName), new Claim(ClaimTypes.Role, GetRoleFromToken(token)) }, "Cookies")));
+                    await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(new ClaimsIdentity(new[]
+                    {
+                        new Claim("access_token", token),
+                        new Claim(ClaimTypes.Name, UserName),
+                        new Claim("role", role),
+                        new Claim("UserId", userId) 
+                    }, "Cookies")));
 
                     // Redirect based on user role
                     return RedirectToRoleSpecificPage(token);
@@ -76,13 +89,24 @@ namespace BirthdayPartyBookingForKids_Client.Pages
             return Page();
         }
 
-        private string GetRoleFromToken(string token)
+        private string GetClaimValueFromToken(string token, string claimType)
         {
-            /*var claims = new JwtSecurityTokenHandler().ReadJwtToken(token).Claims;
-            var roleClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
-            return roleClaim ?? "2"*/;
+            var handler = new JwtSecurityTokenHandler();
+            var jsonToken = handler.ReadJwtToken(token);
 
-            /*var handler = new JwtSecurityTokenHandler();
+            var claimValue = jsonToken.Claims.FirstOrDefault(c => c.Type == claimType)?.Value;
+
+            return claimValue;
+        }
+
+
+        /*private string GetRoleFromToken(string token)
+        {
+            *//*var claims = new JwtSecurityTokenHandler().ReadJwtToken(token).Claims;
+            var roleClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+            return roleClaim ?? "2"*//*;
+
+            *//*var handler = new JwtSecurityTokenHandler();
             var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
 
             if (jsonToken != null)
@@ -94,7 +118,7 @@ namespace BirthdayPartyBookingForKids_Client.Pages
             else
             {
                 return "2"; 
-            }*/
+            }*//*
 
             var claims = new JwtSecurityTokenHandler().ReadJwtToken(token).Claims;
             var roleClaim = claims.FirstOrDefault(c => c.Type == "role")?.Value;
@@ -109,11 +133,11 @@ namespace BirthdayPartyBookingForKids_Client.Pages
             }
 
             return roleClaim ?? "2";
-        }
+        }*/
 
         private IActionResult RedirectToRoleSpecificPage(string token)
         {
-            var role = GetRoleFromToken(token);
+            var role = GetClaimValueFromToken(token,"role");
 
             // Redirect based on user role
             if (role == "1")
