@@ -30,7 +30,7 @@ namespace BirthdayPartyBookingForKids_Client.Pages
             _configuration = configuration;
             _logger = logger;
             _httpClient = httpClient;
-            OnPostAsync();
+            
         }
         //public IActionResult OnGet()
         //{
@@ -39,23 +39,27 @@ namespace BirthdayPartyBookingForKids_Client.Pages
 
         [BindProperty]
         public UserViewModel UserViewModel { get; set; }
-        public object UserId { get; private set; }
-        public object UserName { get; private set; }
-        public object Email { get; private set; }
-        public object Password { get; private set; }
-        public object BirthDay { get; private set; }
-        public object Phone { get; private set; }
-        public object RoleId { get; private set; }
+        [BindProperty]
+        public string UserId { get; set; }
+        [BindProperty]
+        public string UserName { get; set; }
+        [BindProperty]
+        public string Email { get; set; }
+        [BindProperty]
+        public string Password { get; set; }
+        [BindProperty]
+        public DateTime BirthDay { get; set; }
+        [BindProperty]
+        public string Phone { get; set; }
+        [BindProperty]
+        public string RoleId { get; set; }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+            
             var contentType = new MediaTypeWithQualityHeaderValue("application/json");
             _httpClient.DefaultRequestHeaders.Accept.Add(contentType);
-            string ApiUrl = $"{_configuration["ApiBaseUrl"]}/api/User/Register??userId={UserId}&userName={UserName}&email={Email}&password={Password}&birthDate={BirthDay}&phone={Phone}&roleId={RoleId}";
+            string ApiUrl = $"{_configuration["ApiBaseUrl"]}/api/User/Register?userId={UserId}&userName={UserName}&email={Email}&password={Password}&birthDate={BirthDay}&phone={Phone}&roleId={RoleId}";
             var user = new User
             {
                 UserId = UserViewModel.UserId,
