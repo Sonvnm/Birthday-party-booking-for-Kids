@@ -1,11 +1,10 @@
 ﻿namespace BirthdayPartyBookingForKids_Client.ViewModel
 {
-    public class DecorationViewModel
+    public class MenuViewModel
     {
-        public string ItemId { get; set; }
-        public string ItemName { get; set; }
+        public string FoodId { get; set; }
+        public string FoodName { get; set; }
         public string Description { get; set; }
         public double? Price { get; set; }
-
     }
 }
