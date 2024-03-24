@@ -31,7 +31,7 @@ namespace DataAccess
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
-                room = context.Rooms.FirstOrDefault(x => x.LocationId.Equals(id));
+                room = context.Rooms.FirstOrDefault(x => x.LocationId==id);
             }catch(Exception ex)
             {
                 throw new Exception(ex.Message);
