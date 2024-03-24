@@ -48,6 +48,7 @@ namespace BirthdayPartyBookingForKids_Client.Pages
         public string Time { get; set; }
 
         public string ErrorMessage { get; set; }
+        public string SuccessMessage { get; set; }
 
         public IEnumerable<SelectListItem> Locations { get; private set; }
         public IEnumerable<SelectListItem> Services { get; private set; }
@@ -133,41 +134,19 @@ namespace BirthdayPartyBookingForKids_Client.Pages
         public async Task<IActionResult> OnPostAsync()
         {
             try
-            {
-                /*?participateAmount ={ ParticipateAmount}
-                &dateBooking ={ DateBooking}
-                &locationId ={ LocationId}
-                &serviceId ={ ServiceId}
-                &kidBirthday ={ KidBirthday}
-                &kidName ={ KidName}
-                &kidGender ={ KidGender}
-                &time ={ Time}*/
-
+            { 
                 var token = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "access_token")?.Value;
                 var claimUser = User.FindFirst("UserId")?.Value;
                 UserId = claimUser;
                 var apiUrl = $"{_configuration["ApiBaseUrl"]}/api/Booking/CreateBooking?userId={UserId}&participateAmount={ParticipateAmount}&dateBooking={DateBooking}&locationId={LocationId}&serviceId={ServiceId}&kidBirthday={KidBirthday}&kidName={KidName}&kidGender={KidGender}&time={Time}";
 
-                // Get the authentication cookie
-                /*var requestMessage = new HttpRequestMessage(HttpMethod.Post, apiUrl);
-                requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-*/             
 
-                // Create an HttpClient instance and set the authentication cookie
-                var httpClient = _httpClientFactory.CreateClient();
-
-/*                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-*/
-
-                /*if (!string.IsNullOrEmpty(token))
-                {
-                    httpClient.DefaultRequestHeaders.Add("Cookie", token);
-                }*/
-
-                var response = await httpClient.PostAsync(apiUrl, null);
+                var client = _httpClientFactory.CreateClient();
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                var content = new StringContent(JsonConvert.SerializeObject(Booking), Encoding.UTF8, "application/json");
 
 
-                /*var response = await httpClient.SendAsync(requestMessage);*/
+                var response = await client.PostAsync(apiUrl, content);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -180,17 +159,8 @@ namespace BirthdayPartyBookingForKids_Client.Pages
                 {
                     // Read the response content which should contain the booked information
                     var responseBody = await response.Content.ReadAsStringAsync();
-
-                    // Pass the booked information to the success page using TempData
-/*                    var bookingInfo = JsonConvert.DeserializeObject<Booking>(responseBody);
-*/
-/*                    double totalPrice = (double)(bookingInfo.Location.Price + bookingInfo.Service.TotalPrice);
-*/
-              /*      TempData["BookingInfo"] = bookingInfo;
-                    TempData["TotalPrice"] = totalPrice.ToString("C");*/
-
-                    // Redirect to the success page
-                    return RedirectToPage("/Customer/BookingSuccessShow");
+                    SuccessMessage = "Booking successfully";
+                    return Page();
                 }
                 else
                 {

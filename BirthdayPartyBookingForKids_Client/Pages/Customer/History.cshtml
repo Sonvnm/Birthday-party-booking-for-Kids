@@ -1,0 +1,40 @@
+﻿@page "/History"
+@model BirthdayPartyBookingForKids_Client.Pages.Customer.HistoryModel
+@{
+    ViewData["Title"] = "Booking History";
+    var token = Request.Cookies["access_token"];
+}
+<a asp-page="/Customer/Booking" class="btn btn-primary">Return to Booking</a>
+
+<h2>User Bookings</h2>
+
+@if (Model.Bookings != null && Model.Bookings.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Kid Name</th>
+                <th>Kid Birthday</th>
+                <th>Total Price</th>
+                <th>Participate Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var booking in Model.Bookings)
+            {
+                <tr>
+                    <td>@booking.DateBooking</td>
+                    <td>@booking.KidName</td>
+                    <td>@booking.KidBirthDay</td>
+                    <td>@booking.TotalPrice</td>
+                    <td>@booking.ParticipateAmount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No bookings found.</p>
+}

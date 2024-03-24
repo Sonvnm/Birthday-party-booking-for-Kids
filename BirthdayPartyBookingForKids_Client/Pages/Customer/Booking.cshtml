@@ -2,9 +2,21 @@
 @model BirthdayPartyBookingForKids_Client.Pages.BookingModel
 @{
     ViewData["Title"] = "Booking";
+    var token = Request.Cookies["access_token"];
+}
+
+<a asp-page="/Customer/History" class="btn btn-primary">History</a>
+
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success" role="alert">
+        @Model.SuccessMessage
+    </div>
 }
 
 <h1>Booking</h1>
+
+
 <a asp-page="/Login">Logout</a>
 <form method="post">
     <div class="form-group">

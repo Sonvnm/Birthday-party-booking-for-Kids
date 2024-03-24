@@ -16,8 +16,21 @@ builder.Services.AddAuthentication("Cookies")
         options.Cookie.Name = "Cookies"; 
     });
 
+// Configure CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowOrigin", builder =>
+    {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
+
+app.UseCors("AllowOrigin");
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -30,14 +43,6 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
-/*// Configure CORS
-app.UseCors(builder =>
-{
-    builder.WithOrigins("http://localhost:5297") 
-           .AllowAnyHeader()
-           .AllowAnyMethod();
-});*/
 
 app.UseAuthentication();
 app.UseAuthorization();
