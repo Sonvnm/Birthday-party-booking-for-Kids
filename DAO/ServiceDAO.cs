@@ -10,7 +10,7 @@ namespace DataAccess
 {
     public class ServiceDAO
     {
-        public static List<Service> GetServices()
+        public static IList<Service> GetServices()
         {
             var list = new List<Service>();
 
