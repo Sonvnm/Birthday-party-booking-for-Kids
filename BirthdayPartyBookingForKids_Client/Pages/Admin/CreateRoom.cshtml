@@ -1,0 +1,27 @@
+﻿@page
+@model BirthdayPartyBookingForKids_Client.Pages.Admin.CreateRoomModel
+@{
+    ViewData["Title"] = "Create Room";
+    var token = Request.Cookies["access_token"];
+}
+
+
+<form method="post">
+    <div class="form-group">
+        <label>Room ID:</label>
+        <input type="text" id="locationId" name="LocationId" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Room Name:</label>
+        <input type="text" id="locationName" name="LocationName" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Descriptiom:</label>
+        <input type="text" id="description" name="Description" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Price:</label>
+        <input type="number" id="price" name="Price" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
