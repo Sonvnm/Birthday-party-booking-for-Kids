@@ -1,0 +1,51 @@
+﻿@page
+@model BirthdayPartyBookingForKids_Client.Pages.Admin.ListRoomModel
+@{
+   ViewData["Title"] = "Room";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].LocationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].LocationName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].Price)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Room)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LocationId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LocationName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.LocationId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.LocationId">Details</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.LocationId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <a asp-page="/Login">Logout</a>
+</table>

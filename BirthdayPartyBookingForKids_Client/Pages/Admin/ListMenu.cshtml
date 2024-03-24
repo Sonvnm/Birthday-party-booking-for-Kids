@@ -1,0 +1,50 @@
+﻿@page
+@model BirthdayPartyBookingForKids_Client.Pages.Admin.ListMenuModel
+@{
+    ViewData["Title"] = "Menu";
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Menu[0].FoodId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Menu[0].FoodName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Menu[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Menu[0].Price)
+            </th>
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Menu) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FoodId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FoodName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.FoodId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.FoodId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.FoodId">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+    <a asp-page="/Login">Logout</a>
+</table>
