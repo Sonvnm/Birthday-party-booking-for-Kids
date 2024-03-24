@@ -30,14 +30,15 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
         [Authorize(Policy = "AdminPolicy")]
         [HttpPost("Post new Room")]
-        public IActionResult PostRoom(string LocationID, string LocationName, String Description, double Price)
+        public IActionResult PostRoom(string locationID, string locationName, String description, double price)
         {
-            var room = new Room();
-            room.LocationId = LocationID;
-            room.LocationName = LocationName;
-            room.Description = Description;
-            room.Price = Price;
-                
+            Room room = new Room
+            {
+                LocationId = locationID,
+                LocationName = locationName,
+                Description = description,
+                Price = price
+            };              
             repo.SaveRoom(room);
             return Ok(room);
         }
