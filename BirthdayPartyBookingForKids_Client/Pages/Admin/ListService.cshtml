@@ -1,0 +1,66 @@
+﻿@page
+@model BirthdayPartyBookingForKids_Client.Pages.Admin.ListServiceModel
+@{
+    ViewData["Title"] = "Service";
+}
+<p>
+    <a asp-page="CreateRoom">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Service[0].ServiceId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Service[0].ServiceName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Service[0].Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Service[0].FoodId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Service[0].ItemId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Service[0].TotalPrice)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Service)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ServiceId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ServiceName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FoodId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                </td>
+
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ServiceId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ServiceId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ServiceId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <a asp-page="/Login">Logout</a>
+</table>
