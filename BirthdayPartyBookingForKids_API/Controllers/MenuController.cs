@@ -30,10 +30,11 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
         [Authorize(Policy = "AdminPolicy")]
         [HttpPost("Post new Menu")]
-        public ActionResult<Menu> PostMenu(Menu menu)
+        public ActionResult<Menu> PostMenu(string FoodId, string FoodName, string Description, double? Price)
         {
+            var menu = new Menu { FoodId = FoodId, FoodName = FoodName, Description = Description, Price = Price };
             repo.SaveMenu(menu);
-            return CreatedAtAction(nameof(GetMenuByID), new { id = menu.FoodId }, menu);
+            return Ok();
         }
 
         [Authorize(Policy = "AdminPolicy")]

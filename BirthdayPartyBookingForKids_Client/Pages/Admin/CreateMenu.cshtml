@@ -1,0 +1,26 @@
+﻿@page
+@model BirthdayPartyBookingForKids_Client.Pages.Admin.CreateMenuModel
+@{
+    ViewData["Title"] = "Create Menu";
+    var token = Request.Cookies["access_token"];
+}
+
+<form method="post">
+    <div class="form-group">
+        <label>Food ID:</label>
+        <input type="text" id="foodId" name="FoodId" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Food Name:</label>
+        <input type="text" id="foodName" name="FoodName" class="form-control" required />
+    </div> 
+    <div class="form-group">
+        <label>Descriptiom:</label>
+        <input type="text" id="description" name="Description" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Price:</label>
+        <input type="number" id="price" name="Price" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
