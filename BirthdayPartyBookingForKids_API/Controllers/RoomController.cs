@@ -58,14 +58,14 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
         [Authorize(Policy = "AdminPolicy")]
         [HttpDelete("DeleteRoom")]
-        public IActionResult DeleteRoom(string id, Room room) 
+        public IActionResult DeleteRoom(string id) 
         {
             var getroom = repo.GetRoomById(id);
             if (getroom == null)
             {
                 return NotFound();
             }
-            repo.DeleteRoom(room);
+            repo.DeleteRoom(getroom);
             return Ok();
         }
     }
