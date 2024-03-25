@@ -17,7 +17,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         [HttpGet("ListRoom")]
         public ActionResult<IEnumerable<Room>> GetAllRoom() => repo.GetAllRooms();
 
-        [HttpGet("{id}")]
+        [HttpGet("GetRoomByID")]
         public ActionResult<Room>GetRoomByID(string id)
         {
             var room = repo.GetRoomById(id);

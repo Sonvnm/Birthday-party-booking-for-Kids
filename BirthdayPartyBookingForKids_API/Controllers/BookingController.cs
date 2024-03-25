@@ -66,14 +66,14 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetBookingById")]
         [EnableQuery]
         [ODataRouteComponent("({key})")]
-        public IActionResult Get([FromODataUri] string key)
+        public IActionResult Get(string id)
         {
             try
             {
-                var booking = repo.GetBookingById(key);
+                var booking = repo.GetBookingById(id);
 
                 if (booking == null)
                 {
@@ -233,5 +233,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+
     }
 }

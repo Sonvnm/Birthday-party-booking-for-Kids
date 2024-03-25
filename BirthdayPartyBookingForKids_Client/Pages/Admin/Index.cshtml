@@ -55,8 +55,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Role.RoleId)
             </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.UserId">Edit</a> |
+            <td>              
                 @*<a asp-page="./Details" asp-route-id="@item.UserId">Details</a>*@ |
                 <a asp-page="./Delete" asp-route-id="@item.UserId">Delete</a>
             </td>

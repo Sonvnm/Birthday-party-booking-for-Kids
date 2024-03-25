@@ -31,7 +31,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             return Ok(services);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetServiceById")]
         public ActionResult<Service> GetServiceById(string id)
         {
             var service = repo.GetServiceById(id);

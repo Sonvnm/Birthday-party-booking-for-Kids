@@ -1,12 +1,13 @@
-﻿@page "/History"
-@model BirthdayPartyBookingForKids_Client.Pages.Customer.HistoryModel
+﻿@page "/Detail"
+@model BirthdayPartyBookingForKids_Client.Pages.Customer.DetailModel
 @{
-    ViewData["Title"] = "Booking History";
-    var token = Request.Cookies["access_token"];
+	ViewData["Title"] = "Detail";
+	var token = Request.Cookies["access_token"];
 }
-<a asp-page="/Customer/Booking" class="btn btn-primary">Return to Booking</a>
 
-<h2>User Bookings</h2>
+<a href="/History">Return to History</a>
+
+<h2>Detail</h2>
 
 @if (Model.Bookings != null && Model.Bookings.Any())
 {
@@ -16,9 +17,12 @@
                 <th>Date</th>
                 <th>Kid Name</th>
                 <th>Kid Birthday</th>
+                <th>Kid Gender</th>
                 <th>Total Price</th>
                 <th>Participate Amount</th>
-                <th>Action</th>
+                <th>Location</th>
+                <th>Service</th>
+                <th>Time</th>
             </tr>
         </thead>
         <tbody>
@@ -28,11 +32,12 @@
                     <td>@booking.DateBooking</td>
                     <td>@booking.KidName</td>
                     <td>@booking.KidBirthDay</td>
+                    <td>@booking.KidGender</td>
                     <td>@booking.TotalPrice</td>
                     <td>@booking.ParticipateAmount</td>
-                    <td>
-                        <a href="@Url.Page("/Customer/Detail", new {id = booking.BookingId})">Detail</a>
-                    </td>
+                    <td>@booking.LocationId</td>
+                    <td>@booking.ServiceId</td>
+                    <td>@booking.Time</td>
                 </tr>
             }
         </tbody>
@@ -40,5 +45,5 @@
 }
 else
 {
-    <p>No bookings found.</p>
+    <p>Booking ID not found</p>
 }
