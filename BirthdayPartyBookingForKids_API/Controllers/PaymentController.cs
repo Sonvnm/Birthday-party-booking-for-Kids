@@ -23,11 +23,16 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             return Ok(list);
         }
         [HttpPut]
-        public IActionResult PutPayment(Payment payment)
+        public IActionResult PutPayment(PaymentDto paymentDto)
         {
             try
             {
-                repo.Update(payment);
+                var getpayment = repo.GetPaymentBypaymentId(paymentDto.PaymentId);
+                if(getpayment == null)
+                {
+                    return NotFound();
+                }
+                repo.Update(paymentDto);
             }catch(Exception ex)
             {
                 return NoContent();
