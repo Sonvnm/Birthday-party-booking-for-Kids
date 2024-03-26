@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Repositoties.IRepository
         void SaveRoom(Room room);
         Room GetRoomById(string roomId);
         void DeleteRoom(Room room);
-        void UpdateRoom(Room room);
+        void UpdateRoom(RoomDto roomDto);
         List<Room> GetAllRooms();
 
     }
