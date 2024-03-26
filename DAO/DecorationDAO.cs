@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -64,12 +65,19 @@ namespace DataAccess
             }
         }
 
-        public static void UpdateDecoration(Decoration decoration)
+        public static void UpdateDecoration(DecorationDto decorationDto)
         {
             try
             {
                 using (var context = new BirthdayPartyBookingForKids_DBContext())
                 {
+                    var decoration = new Decoration
+                    {
+                        ItemId = decorationDto.ItemId,
+                        ItemName = decorationDto.ItemName,
+                        Description = decorationDto.Description,
+                        Price = decorationDto.Price,
+                    };
                     context.Entry(decoration).State = EntityState.Modified;
                     context.SaveChanges();
                 }

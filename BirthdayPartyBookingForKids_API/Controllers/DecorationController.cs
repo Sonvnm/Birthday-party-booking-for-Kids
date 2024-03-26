@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -69,7 +70,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
         [Authorize(Policy = "AdminPolicy")]
         [HttpPut("{id}")]
-        public IActionResult PutDecoration(string id, DecorationModel model)
+        public IActionResult PutDecoration(string id, DecorationDto decorationDto)
         {
             var decoration = repo.GetDecorationById(id);
             if (decoration == null)
@@ -77,10 +78,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
                 return NotFound();
             }
             
-            decoration.ItemName = model.ItemName;
-            decoration.Description = model.Description;
-            decoration.Price = model.Price;
-            repo.Update(decoration);
+            repo.Update(decorationDto);
             return Ok();
         }
 
