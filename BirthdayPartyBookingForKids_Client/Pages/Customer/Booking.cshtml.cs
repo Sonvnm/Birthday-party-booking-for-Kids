@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using NuGet.Common;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Claims;
@@ -32,20 +33,31 @@ namespace BirthdayPartyBookingForKids_Client.Pages
         public string UserId { get; set; }
         [BindProperty]
         public int ParticipateAmount { get; set; }
+
         [BindProperty]
         public DateTime DateBooking { get; set; }
+
         [BindProperty]
         public string LocationId { get; set; }
+
         [BindProperty]
         public string ServiceId { get; set; }
+
         [BindProperty]
         public DateTime KidBirthday { get; set; }
+
         [BindProperty]
         public string KidName { get; set; }
+
         [BindProperty]
         public string KidGender { get; set; }
+
         [BindProperty]
-        public string Time { get; set; }
+        public string Time
+        {
+            get; set;
+        }
+
 
         public string ErrorMessage { get; set; }
         public string SuccessMessage { get; set; }
@@ -174,7 +186,17 @@ namespace BirthdayPartyBookingForKids_Client.Pages
             {
                 _logger.LogError($"Error creating booking: {ex.Message}");
                 ModelState.AddModelError(string.Empty, "An error occurred while processing your request.");
+                ErrorMessage = "An error occurred while processing your request.";
                 return Page();
+            }
+        }
+
+        public class DateGreaterThanTodayAttribute : ValidationAttribute
+        {
+            public override bool IsValid(object value)
+            {
+                DateTime dateTime = (DateTime)value;
+                return dateTime.Date > DateTime.Now.Date;
             }
         }
 
