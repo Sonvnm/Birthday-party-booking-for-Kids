@@ -1,5 +1,6 @@
 ﻿using BirthdayPartyBookingForKids_API.Helpers;
 using BusinessObject.Models;
+using DataAccess.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -93,9 +94,9 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult PutUser(string id, User user)
+        public IActionResult PutUser(string id, UserDto userDto)
         {
-            if (id.Equals( user.UserId))
+            if (id != userDto.UserId)
             {
                 return BadRequest();
             }
@@ -104,7 +105,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
             if (p1 == null)
                 return NotFound();
-            repo.Update(user);
+            repo.Update(userDto);
             return Ok();
         }
 

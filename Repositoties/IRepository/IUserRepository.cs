@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Repositoties.IRepository
         User Login(string username,string password);
         void Register(User user);
         void Delete(User user);
-        void Update(User user);
+        void Update(UserDto userDto);
         IList<User> GetAllUser();
         User GetUserById(string id);
         IList<User> GetUserByName(string username);
