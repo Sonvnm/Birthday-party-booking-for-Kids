@@ -1,5 +1,6 @@
 ﻿using BusinessObject;
 using BusinessObject.Models;
+using DataAccess.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -61,11 +62,21 @@ namespace DataAccess
                 throw new Exception(e.Message);
             }
         }
-        public static void UpdateUser(User user)
+        public static void UpdateUser(UserDto userDto)
         {
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
+                var user = new User
+                {
+                    UserId = userDto.UserId,
+                    UserName = userDto.UserName,
+                    Email = userDto.Email,
+                    Password = userDto.Password,
+                    Phone = userDto.Phone,
+                    BirthDate = userDto.BirthDate,
+                    RoleId = userDto.RoleId,
+                };
                 context.Entry(user).State = EntityState.Modified;
                 context.SaveChanges();
             }

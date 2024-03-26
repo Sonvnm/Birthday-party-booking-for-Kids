@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using DataAccess;
+using DataAccess.DTO;
 using Repositoties.IRepository;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace Repositoties.Repository
         public void Register(User user)
         => UserDAO.Register(user);
 
-        public void Update(User user)
-        => UserDAO.UpdateUser(user);
+        public void Update(UserDto userDto)
+        => UserDAO.UpdateUser(userDto);
     }
 }
