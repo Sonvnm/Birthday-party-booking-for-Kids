@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ namespace Repositoties.IRepository
     public interface IMenuRepository
     {
         void SaveMenu(Menu menu);
-        Menu GetMenuById(int menuId);
+        Menu GetMenuById(string menuId);
         void DeleteMenu(Menu menu);
-        void UpdateMenu(Menu menu);
+        void UpdateMenu(MenuDto menuDto);
         List<Menu> GetAllMenus();
     }
 }

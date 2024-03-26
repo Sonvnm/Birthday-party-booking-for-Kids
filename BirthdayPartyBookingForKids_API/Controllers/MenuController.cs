@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         public ActionResult<IEnumerable<Menu>> GetAllMenu() => repo.GetAllMenus();
 
         [HttpGet("{id}")]
-        public ActionResult<Menu> GetMenuByID(int id)
+        public ActionResult<Menu> GetMenuByID(string id)
         {
             var menu = repo.GetMenuById(id);
             if (menu == null)
@@ -39,20 +40,20 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
         [Authorize(Policy = "AdminPolicy")]
         [HttpPut("UpdateMenu")]
-        public IActionResult UpdateRoom(int id, Menu menu)
+        public IActionResult UpdateRoom(string id, MenuDto menuDto)
         {
             var getMenu = repo.GetMenuById(id);
             if (getMenu == null)
             {
                 return NotFound();
             }
-            repo.UpdateMenu(menu);
-            return Ok(menu);
+            repo.UpdateMenu(menuDto);
+            return Ok(menuDto);
         }
 
         [Authorize(Policy = "AdminPolicy")]
         [HttpDelete("DeleteRoom{id}")]
-        public IActionResult DeleteMenu(int id, Menu menu)
+        public IActionResult DeleteMenu(string id, Menu menu)
         {
             var getMenu = repo.GetMenuById(id);
             if (getMenu == null)
