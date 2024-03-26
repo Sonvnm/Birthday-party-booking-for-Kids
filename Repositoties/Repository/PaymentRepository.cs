@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using DataAccess;
+using DataAccess.DTO;
 using Repositoties.IRepository;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,14 @@ namespace Repositoties.Repository
 
         public IList<Payment> GetPaymentBypaymentId(string paymentId) => PaymentDAO.GetPaymentBypaymentId(paymentId);
 
-        public void Save(Payment payment) => PaymentDAO.Save(payment);
+        public void Save(PaymentDto paymentDto) => PaymentDAO.Save(paymentDto);
         
 
-        public void Update(Payment payment) => PaymentDAO.Update(payment);
+        public void Update(PaymentDto paymentDto) => PaymentDAO.Update(paymentDto);
 
         public bool Exist(string paymentId) => PaymentDAO.Exist(paymentId);
+
+        public IList<Payment> GetAll()
+        => PaymentDAO.GetAllPayment();
     }
 }

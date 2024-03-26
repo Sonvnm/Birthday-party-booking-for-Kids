@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Repositoties.IRepository;
@@ -45,11 +46,11 @@ namespace BirthdayPartyBookingForKids_API.Controllers
             return NoContent();
         }*/
         [HttpPost]
-        public ActionResult<Payment> PostPayment(Payment payment) 
+        public ActionResult<Payment> PostPayment(PaymentDto paymentDto) 
         {
             try
             {
-                repo.Save(payment);
+                repo.Save(paymentDto);
                 return Ok();
             }catch(Exception ex)
             {
@@ -57,12 +58,18 @@ namespace BirthdayPartyBookingForKids_API.Controllers
                 {
                     return NotFound();
                 }
-                return Ok(payment);
+                return Ok(paymentDto);
             }
         }
         private bool paymentExist(string paymentId)
         {
             return repo.Exist(paymentId);
+        }
+        [HttpGet("GetAllPayment")]
+        public ActionResult<IList<Payment>> GetAllPayment()
+        {
+            IList<Payment> payment = repo.GetAll();
+            return Ok(payment);
         }
     }
 }  
