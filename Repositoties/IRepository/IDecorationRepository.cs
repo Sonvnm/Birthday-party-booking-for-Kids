@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Repositoties.IRepository
     {
         void Add(Decoration decoration);
         void Delete(Decoration decoration);
-        void Update(Decoration decoration);
+        void Update(DecorationDto decorationDto);
         IList<Decoration> GetAllDecorations();
         Decoration GetDecorationById(string id);
         IList<Decoration> GetDecorationsByName(string name);

@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,11 +52,18 @@ namespace DataAccess
                 throw new Exception(ex.Message);
             }
         }
-        public static void UpdateRoomn(Room room)
+        public static void UpdateRoomn(RoomDto roomDto)
         {
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
+                var room = new Room
+                {
+                    LocationId = roomDto.LocationId,
+                    LocationName = roomDto.LocationName,
+                    Description = roomDto.Description,
+                    Price = roomDto.Price,
+                };
                 context.Entry<Room>(room).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 context.SaveChanges();
             }
@@ -69,7 +77,7 @@ namespace DataAccess
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
-                var checkRoom = context.Rooms.SingleOrDefault(p => p.LocationId.Equals(room.LocationId));
+                var checkRoom = context.Rooms.FirstOrDefault(p => p.LocationId.Equals(room.LocationId));
                 context.Rooms.Remove(checkRoom);
                 context.SaveChanges();
             }

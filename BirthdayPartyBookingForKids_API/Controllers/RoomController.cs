@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -45,15 +46,15 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
         [Authorize(Policy = "AdminPolicy")]
         [HttpPut("UpdateRoom")]
-        public IActionResult UpdateRoom(string id, Room room)
+        public IActionResult UpdateRoom(string id, RoomDto roomDto)
         {
             var getroom = repo.GetRoomById(id);
             if(getroom == null)
             {
                 return NotFound();
             }
-            repo.UpdateRoom(room);
-            return Ok(room);
+            repo.UpdateRoom(roomDto);
+            return Ok(roomDto);
         }
 
         [Authorize(Policy = "AdminPolicy")]

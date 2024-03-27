@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,13 +27,13 @@ namespace DataAccess
             return listMenus;
         }
 
-        public static Menu GetMenuByID(int id)
+        public static Menu GetMenuByID(string id)
         {
             var menu = new Menu();
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
-                menu = context.Menus.FirstOrDefault(x => x.FoodId.Equals(id));
+                menu = context.Menus.FirstOrDefault(x => x.FoodId == id);
             }
             catch (Exception ex)
             {
@@ -53,11 +54,18 @@ namespace DataAccess
                 throw new Exception(ex.Message);
             }
         }
-        public static void UpdateMenu(Menu menu)
+        public static void UpdateMenu(MenuDto menuDto)
         {
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
+                var menu = new Menu
+                {
+                    FoodId = menuDto.FoodId,
+                    FoodName = menuDto.FoodName,
+                    Description = menuDto.Description,
+                    Price = menuDto.Price,
+                };
                 context.Entry<Menu>(menu).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
                 context.SaveChanges();
             }
@@ -71,7 +79,7 @@ namespace DataAccess
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
-                var checkMenu = context.Menus.SingleOrDefault(p => p.FoodId.Equals(menu.FoodId));
+                var checkMenu = context.Menus.SingleOrDefault(p => p.FoodId == menu.FoodId);
                 context.Menus.Remove(checkMenu);
                 context.SaveChanges();
             }

@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using DataAccess;
+using DataAccess.DTO;
 using Repositoties.IRepository;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,6 @@ namespace Repositoties.Repository
 
         public IList<Decoration> GetDecorationsByName(string name) => DecorationDAO.SearchByName(name);
 
-        public void Update(Decoration decoration) => DecorationDAO.UpdateDecoration(decoration);
+        public void Update(DecorationDto decorationDto) => DecorationDAO.UpdateDecoration(decorationDto);
     }
 }

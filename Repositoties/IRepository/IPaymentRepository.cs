@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,11 @@ namespace Repositoties.IRepository
 {
     public interface IPaymentRepository
     {
-        void Save(Payment payment);
+        void Save(PaymentDto paymentDto);
         void Delete(Payment payment);
-        void Update(Payment payment);
+        void Update(PaymentDto paymentDto);
         IList<Payment> GetPaymentBypaymentId(string paymentId);
         bool Exist(string paymentId);
+        IList<Payment> GetAll();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using DataAccess;
+using DataAccess.DTO;
 using Repositoties.IRepository;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace Repositoties.Repository
         public void SaveRoom(Room room)
         =>RoomDAO.SaveRoomn(room);
 
-        public void UpdateRoom(Room room)
-        =>RoomDAO.UpdateRoomn(room);
+        public void UpdateRoom(RoomDto roomDto)
+        =>RoomDAO.UpdateRoomn(roomDto);
     }
 }

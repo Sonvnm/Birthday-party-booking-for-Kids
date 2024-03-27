@@ -1,5 +1,6 @@
 ﻿using BusinessObject.Models;
 using DataAccess;
+using DataAccess.DTO;
 using Repositoties.IRepository;
 using System;
 using System.Collections.Generic;
@@ -15,10 +16,10 @@ namespace Repositoties.Repository
 
         public List<Menu> GetAllMenus() => MenuDao.GetAllMenus();
 
-        public Menu GetMenuById(int menuId) => MenuDao.GetMenuByID(menuId);
+        public Menu GetMenuById(string menuId) => MenuDao.GetMenuByID(menuId);
 
         public void SaveMenu(Menu menu) => MenuDao.SaveMenu(menu);
 
-        public void UpdateMenu(Menu room) => MenuDao.UpdateMenu(room);
+        public void UpdateMenu(MenuDto menuDto) => MenuDao.UpdateMenu(menuDto);
     }
 }

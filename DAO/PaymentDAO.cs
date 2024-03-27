@@ -1,4 +1,5 @@
 ﻿using BusinessObject.Models;
+using DataAccess.DTO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,21 @@ namespace DataAccess
 {
     public class PaymentDAO
     {
-        public static void Save(Payment payment)
+        public static void Save(PaymentDto paymentDto)
         {
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
-                var booking = context.Bookings.FirstOrDefault(o => o.BookingId == payment.BookingId);
-                booking.TotalPrice = payment.Amount;
+                var payment = new Payment
+                {
+                    PaymentId = paymentDto.PaymentId,
+                    BankId = paymentDto.BankId,
+                    BankName = paymentDto.BankName,
+                    MoneyReceiver = paymentDto.MoneyReceiver,
+                    Amount = paymentDto.Amount,
+                    PaymentTypeId = paymentDto.PaymentTypeId,
+                    BookingId = paymentDto.BookingId,
+                };
                 context.Payments.Add(payment);
                 context.SaveChanges();
             }catch(Exception ex)
@@ -49,11 +58,21 @@ namespace DataAccess
             }
             return list;
         }
-        public static void Update(Payment payment)
+        public static void Update(PaymentDto paymentDto)
         {
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
+                var payment = new Payment
+                {
+                    PaymentId = paymentDto.PaymentId,
+                    BankId = paymentDto.BankId,
+                    BankName = paymentDto.BankName,
+                    MoneyReceiver = paymentDto.MoneyReceiver,
+                    Amount = paymentDto.Amount,
+                    PaymentTypeId = paymentDto.PaymentTypeId,
+                    BookingId = paymentDto.BookingId,
+                };
                 context.Entry(payment).State = EntityState.Modified;
                 context.SaveChanges();
             }catch(Exception ex)
@@ -66,6 +85,21 @@ namespace DataAccess
             using var context = new BirthdayPartyBookingForKids_DBContext();
             return context.Payments.Any(e => e.PaymentId == paymentId);
         }
-
+        public static List<Payment> GetAllPayment()
+        {
+            var listPayment = new List<Payment>();
+            try
+            {
+                using (var context = new BirthdayPartyBookingForKids_DBContext())
+                {
+                    listPayment = context.Payments.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return listPayment;
+        }
     }
 }
