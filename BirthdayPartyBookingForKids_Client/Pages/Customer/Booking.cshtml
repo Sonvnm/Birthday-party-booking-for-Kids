@@ -14,11 +14,40 @@
     </div>
 }
 
+
+<script>
+    function validateAndSubmit() {
+        event.preventDefault();
+        // Perform validation for each field
+        var locationId = document.getElementById('locationId').value;
+        var participateAmount = document.getElementById('participateAmount').value;
+        // Add validation for other fields as needed
+
+        // Check if any field is empty
+        if (!locationId || !participateAmount /* Add conditions for other fields */) {
+            // Display error message
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        // Check additional validation rules (e.g., DateBooking > current date)
+        var dateBooking = new Date(document.getElementById('dateBooking').value);
+        var currentDate = new Date();
+        if (dateBooking <= currentDate) {
+            alert('Booking date must be after the current date.');
+            return;
+        }
+
+        // If all validations pass, submit the form
+        document.getElementById('bookingForm').submit();
+    }
+</script>
+
 <h1>Booking</h1>
 
 
 <a asp-page="/Login">Logout</a>
-<form method="post">
+<form method="post" id="bookingForm">
     <div class="form-group">
         <input type="hidden" class="form-control" id="userId" name="UserId" />
     </div>
@@ -27,24 +56,29 @@
         <select class="form-control" id="locationId" name="LocationId" asp-items="Model.Locations">
             <option value="">Select Location</option>
         </select>
+        <span asp-validation-for="LocationId" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label>Service:</label>
         <select class="form-control" id="serviceId" name="ServiceId" asp-items="Model.Services">
             <option value="">Select Service</option>
         </select>
+        <span asp-validation-for="ServiceId" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label>Participate Amount:</label>
         <input type="number" class="form-control" id="participateAmount" name="ParticipateAmount">
+        <span asp-validation-for="ParticipateAmount" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label>Booking Date:</label>
         <input type="date" class="form-control" id="dateBooking" name="DateBooking">
+        <span asp-validation-for="DateBooking" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label>Kid's Birthday:</label>
         <input type="date" class="form-control" id="kidBirthDay" name="KidBirthDay">
+        <span asp-validation-for="KidBirthday" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label>Kid's Name:</label>
@@ -66,7 +100,7 @@
     </div>
 
     <div class="text-center mt-4">
-        <button type="submit" class="btn btn-primary">Book</button>
+        <button type="button" class="btn btn-primary" onclick="validateAndSubmit()">Book</button>
     </div>
     
 </form>
