@@ -30,7 +30,7 @@ namespace BusinessObject.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=1234567890;database=BirthdayPartyBookingForKids_DB;TrustServerCertificate=True");
+                optionsBuilder.UseSqlServer("Server=MSI\\SQLEXPRESS;uid=sa;pwd=12345;database=BirthdayPartyBookingForKids_DB;TrustServerCertificate=True");
             }
         }
 

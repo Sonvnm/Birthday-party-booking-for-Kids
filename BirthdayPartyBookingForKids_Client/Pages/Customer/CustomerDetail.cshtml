@@ -1,0 +1,56 @@
+﻿@page
+@model BirthdayPartyBookingForKids_Client.Pages.Customer.CustomerDetailModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>User</h1>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserViewModel.UserName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserViewModel.UserName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserViewModel.Email)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserViewModel.Email)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserViewModel.Password)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserViewModel.Password)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserViewModel.BirthDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserViewModel.BirthDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserViewModel.Phone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserViewModel.Phone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UserViewModel.RoleId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UserViewModel.RoleId)
+        </dd>
+    </dl>
+
+    <form method="post">
+        <input type="hidden" asp-for="UserViewModel.UserId" />
+        <a asp-page="./CustomerUpdate">Update Profile</a> |
+        <a asp-page="./Booking">Back to Booking</a>
+    </form>
+</div>

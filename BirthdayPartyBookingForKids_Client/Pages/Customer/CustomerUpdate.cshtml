@@ -1,0 +1,60 @@
+﻿@page
+@model BirthdayPartyBookingForKids_Client.Pages.Customer.CustomerUpdateModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>User</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="UserViewModel.UserId" />
+            <div class="form-group">
+                <label asp-for="UserViewModel.UserName" class="control-label"></label>
+                <input asp-for="UserViewModel.UserName" class="form-control" />
+                <span asp-validation-for="UserViewModel.UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserViewModel.Email" class="control-label"></label>
+                <input asp-for="UserViewModel.Email" class="form-control" />
+                <span asp-validation-for="UserViewModel.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserViewModel.Password" class="control-label"></label>
+                <input asp-for="UserViewModel.Password" class="form-control" />
+                <span asp-validation-for="UserViewModel.Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserViewModel.BirthDate" class="control-label"></label>
+                <input asp-for="UserViewModel.BirthDate" class="form-control" />
+                <span asp-validation-for="UserViewModel.BirthDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="UserViewModel.Phone" class="control-label"></label>
+                <input asp-for="UserViewModel.Phone" class="form-control" />
+                <span asp-validation-for="UserViewModel.Phone" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="UserViewModel.RoleId" />
+            <form method="post">
+                <input type="hidden" asp-for="UserViewModel.UserId" />
+                <input type="submit" value="Save" class="btn btn-danger" /> |
+                <a asp-page="./Index">Back to List</a>
+            </form>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./CustomerDetail">Back to Profile</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

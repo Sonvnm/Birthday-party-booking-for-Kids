@@ -1,4 +1,5 @@
 ﻿CREATE database BirthdayPartyBookingForKids_DB
+drop database BirthdayPartyBookingForKids_DB
 Use BirthdayPartyBookingForKids_DB
 drop database BirthdayPartyBookingForKids_DB
 drop table Role
