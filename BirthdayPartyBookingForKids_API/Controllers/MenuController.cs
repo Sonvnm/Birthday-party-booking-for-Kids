@@ -53,14 +53,14 @@ namespace BirthdayPartyBookingForKids_API.Controllers
 
         [Authorize(Policy = "AdminPolicy")]
         [HttpDelete("DeleteRoom{id}")]
-        public IActionResult DeleteMenu(string id, Menu menu)
+        public IActionResult DeleteMenu(string id)
         {
             var getMenu = repo.GetMenuById(id);
             if (getMenu == null)
             {
                 return NotFound();
             }
-            repo.DeleteMenu(menu);
+            repo.DeleteMenu(getMenu);
             return Ok();
         }
     }

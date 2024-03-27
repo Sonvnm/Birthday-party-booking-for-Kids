@@ -77,7 +77,7 @@ namespace DataAccess
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
-                var checkRoom = context.Rooms.SingleOrDefault(p => p.LocationId.Equals(room.LocationId));
+                var checkRoom = context.Rooms.FirstOrDefault(p => p.LocationId.Equals(room.LocationId));
                 context.Rooms.Remove(checkRoom);
                 context.SaveChanges();
             }

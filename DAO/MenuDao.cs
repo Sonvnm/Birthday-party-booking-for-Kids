@@ -33,7 +33,7 @@ namespace DataAccess
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
-                menu = context.Menus.FirstOrDefault(x => x.FoodId.Equals(id));
+                menu = context.Menus.FirstOrDefault(x => x.FoodId == id);
             }
             catch (Exception ex)
             {
@@ -79,7 +79,7 @@ namespace DataAccess
             try
             {
                 using var context = new BirthdayPartyBookingForKids_DBContext();
-                var checkMenu = context.Menus.SingleOrDefault(p => p.FoodId.Equals(menu.FoodId));
+                var checkMenu = context.Menus.SingleOrDefault(p => p.FoodId == menu.FoodId);
                 context.Menus.Remove(checkMenu);
                 context.SaveChanges();
             }
