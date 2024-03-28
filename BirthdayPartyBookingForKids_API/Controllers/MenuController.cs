@@ -42,6 +42,10 @@ namespace BirthdayPartyBookingForKids_API.Controllers
         [HttpPut("UpdateMenu")]
         public IActionResult UpdateRoom(string id, MenuDto menuDto)
         {
+            if(id!= menuDto.FoodId)
+            {
+                return BadRequest();
+            }
             var getMenu = repo.GetMenuById(id);
             if (getMenu == null)
             {
